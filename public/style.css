@@ -1,5 +1,116 @@
+/* tags */
 body {
-  font-family: arial,sans-serif;
+  font-family: 'Open Sans', arial,sans-serif;
   padding: 0;
   margin: 0;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(45deg, #222, #333);
+  background-attachment: fixed;
+  color: #f2f2f2;
+}
+
+p {
+  font-size: 14px;
+  margin: 0;
+}
+
+small {
+  font-size: 12px;
+  color: darkgray;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td {
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+}
+
+/* ids */
+#app {
+  height: 100%;
+  width: 100%;
+}
+
+#albums {
+  margin: 2em;
+}
+
+#logo {
+  max-height: 100px;
+  max-width: 100px;
+}
+
+#player-container {
+  margin-bottom: 40px;
+}
+
+#player-controls {
+  position: fixed;
+  height: 40px;
+  background-color: #f0f0f0;
+  width: 100%;
+  bottom: 0;
+  box-shadow: 0px -2px 2px #5a5a5a;
+}
+
+#sidebar {
+  width: 20%;
+  height: 100%;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+#sidebar a {
+  transition: border 0.5s ease;
+  cursor: pointer;
+}
+
+#sidebar a:hover {
+  border-bottom: 2px solid #00aaaa;
+}
+
+/* classes */
+.album {
+  margin: 1em;
+}
+
+.album img {
+  height: 200px;
+  width: 200px;
+  transition: box-shadow 0.5s ease;
+  border-radius: 3px;
+}
+
+.album img:hover {
+  box-shadow: 2px 2px 2px #5a5a5a;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+}
+
+.media-btn {
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
 }

@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, '..', 'public')))
 
 // Routes that will be accessed via AJAX should be prepended with
 // /api so they are isolated from our GET /* wildcard.
-app.use(require('./api'))
+app.use('/api', require('./api'))
 
 // This middleware will catch any URLs resembling a file extension
 // for example: .js, .html, .css
