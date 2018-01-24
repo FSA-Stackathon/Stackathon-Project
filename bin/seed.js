@@ -16,31 +16,26 @@ const seed = async () => {
   const ccv2 = await Album.create({
     name: 'Creative Commons Volume 2',
     artistId: dexter.id,
-    genre: 'Instrumental',
     artworkUrl: 'https://learndotresources.s3.amazonaws.com/workshop/58cff0e769468300041ef9fd/creative_commons_vol_2.jpeg'
   })
   const zenith = await Album.create({
     name: 'Zenith',
     artistId: dexter.id,
-    genre: 'Instrumental',
     artworkUrl: 'https://learndotresources.s3.amazonaws.com/workshop/58cff0e769468300041ef9fd/zenith.jpeg'
   })
   const noNations = await Album.create({
     name: 'No Nations (Instrumentals)',
     artistId: jets.id,
-    genre: 'Rock',
     artworkUrl: 'https://learndotresources.s3.amazonaws.com/workshop/58cff0e769468300041ef9fd/no_nations.jpeg'
   })
   const ghosts = await Album.create({
     name: 'Ghosts I-IV',
     artistId: nin.id,
-    genre: 'Ambient',
     artworkUrl: 'https://learndotresources.s3.amazonaws.com/workshop/58cff0e769468300041ef9fd/ghosts_i-iv.jpeg'
   })
   const theSlip = await Album.create({
     name: 'The Slip',
     artistId: nin.id,
-    genre: 'Industrial',
     artworkUrl: 'https://learndotresources.s3.amazonaws.com/workshop/58cff0e769468300041ef9fd/the_slip.jpeg'
   })
 
@@ -62,7 +57,8 @@ const seed = async () => {
     name: song.name,
     audioUrl: song.audioUrl,
     albumId: albums[song.album].id,
-    artistId: artists[song.artist].id
+    artistId: artists[song.artist].id,
+    genre: song.genre
   })))
 
   db.close()

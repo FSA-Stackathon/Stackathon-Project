@@ -4,20 +4,24 @@ const Songs = (props) => {
   const songs = props.songs
 
   return (
-    <table>
+    <table id='songs'>
       <tbody>
-        <tr>
+        <tr className='gray'>
           <td />
           <td>#</td>
           <td>Name</td>
+          <td>Artist</td>
+          <td>Genre</td>
         </tr>
         {
           songs.map((song, idx) => {
             return (
               <tr key={song.id}>
-                <td><img src='/play.png' className='media-btn' /></td>
+                <td><i className='fa fa-play-circle' /></td>
                 <td>{idx + 1}</td>
                 <td>{song.name}</td>
+                <td>{song.artist.name}</td>
+                <td>{song.genre}</td>
               </tr>
             )
           })

@@ -13,7 +13,7 @@ router.get('/', async (req, res, next) => {
 router.get('/:albumId', async (req, res, next) => {
   try {
     const album = await Album.findById(req.params.albumId, {
-      include: [Artist, Song]
+      include: [Artist, {model: Song, include: [Artist]}]
     })
     res.json(album)
   } catch (err) { next(err) }

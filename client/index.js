@@ -41,15 +41,16 @@ class Main extends React.Component {
 
   render () {
     return (
-      <div id='main'>
-        <Player>
-          <Sidebar deselectAlbum={this.deselectAlbum} />
+      <div id='main' className='row container'>
+        <Sidebar deselectAlbum={this.deselectAlbum} />
+        <div className='container'>
           {
             this.state.selectedAlbum.id
               ? <SingleAlbum album={this.state.selectedAlbum} />
               : <AlbumsList albums={this.state.albums} pickAlbum={this.pickAlbum} />
           }
-        </Player>
+        </div>
+        <Player />
       </div>
     )
   }

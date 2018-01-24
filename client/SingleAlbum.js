@@ -4,9 +4,9 @@ import Songs from './Songs'
 
 const SingleAlbum = (props) => {
   return (
-    <div className='row'>
+    <div id='single-album' className='column'>
       <Album album={props.album} />
-      <Songs songs={props.album.songs} artist={props.album.artist} />
+      <Songs songs={props.album.songs} />
     </div>
   )
 }

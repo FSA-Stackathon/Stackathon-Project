@@ -1,13 +1,23 @@
 /* tags */
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Open Sans', arial,sans-serif;
-  padding: 0;
+  padding-bottom: 56px;
   margin: 0;
   height: 100vh;
   width: 100vw;
   background: linear-gradient(45deg, #222, #333);
   background-attachment: fixed;
   color: #f2f2f2;
+  letter-spacing: 0.03em;
+}
+
+i {
+  color: #00aaaa;
+  font-size: 2em;
 }
 
 p {
@@ -25,8 +35,22 @@ table {
   width: 100%;
 }
 
+table tr:hover {
+  background-color: #333;
+}
+
+i.fa {
+  cursor: pointer;
+  font-size: 2em;
+  transition: color 0.2s ease;
+}
+
+i.fa:hover {
+  color: #00aa00;
+}
+
 td {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid gray;
   padding: 10px;
 }
 
@@ -34,6 +58,7 @@ td {
 #app {
   height: 100%;
   width: 100%;
+  overflow: scroll;
 }
 
 #albums {
@@ -45,28 +70,57 @@ td {
   max-width: 100px;
 }
 
+#main > div.container {
+  margin-left: 150px;
+}
+
 #player-container {
-  margin-bottom: 40px;
+  position: fixed;
+  height: 56px;
+  width: 100%;
+  bottom: 0;
 }
 
 #player-controls {
-  position: fixed;
-  height: 40px;
-  background-color: #f0f0f0;
-  width: 100%;
-  bottom: 0;
+  background-color: #333;
   box-shadow: 0px -2px 2px #5a5a5a;
+  height: 100%;
+}
+
+#player-controls > div {
+  height: 100%;
+  align-items: center;
+}
+
+#player-controls i {
+  font-size: 2em;
+  padding: 0 0.5em;
+}
+
+#player-controls i:nth-child(2) {
+  font-size: 3em;
 }
 
 #sidebar {
-  width: 20%;
+  min-width: 150px;
   height: 100%;
-  margin-top: 20px;
-  margin-left: 20px;
+  background-color: #333;
+  border-right: 1px solid gray;
+  text-align: center;
+  position: fixed;
+}
+
+#sidebar img {
+  padding-top: 10px;
+}
+
+#sidebar section {
+  text-align: left;
+  padding-left: 10px;
 }
 
 #sidebar a {
-  transition: border 0.5s ease;
+  transition: border 0.2s ease;
   cursor: pointer;
 }
 
@@ -90,6 +144,10 @@ td {
   box-shadow: 2px 2px 2px #5a5a5a;
 }
 
+.center {
+  justify-content: center;
+}
+
 .column {
   display: flex;
   flex-direction: column;
@@ -100,10 +158,8 @@ td {
   width: 100%;
 }
 
-.media-btn {
-  height: 30px;
-  width: 30px;
-  cursor: pointer;
+.gray {
+  color: gray;
 }
 
 .wrap {
