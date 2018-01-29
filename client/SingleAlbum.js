@@ -3,10 +3,12 @@ import Album from './Album'
 import Songs from './Songs'
 
 const SingleAlbum = (props) => {
+  const {album, toggleOne, isPlaying, currentSong} = props
+
   return (
     <div id='single-album' className='column'>
-      <Album album={props.album} />
-      <Songs songs={props.album.songs} />
+      <Album album={album} />
+      <Songs songs={album.songs} toggleOne={toggleOne} isPlaying={isPlaying} currentSong={currentSong} />
     </div>
   )
 }

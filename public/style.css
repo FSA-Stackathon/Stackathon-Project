@@ -39,6 +39,10 @@ table tr:hover {
   background-color: #333;
 }
 
+table tr.active {
+  background-color: #333;
+}
+
 i.fa {
   cursor: pointer;
   font-size: 2em;
