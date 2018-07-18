@@ -4,16 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack -w & nodemon --watch server -e js,html server/main.js",
-    "seed": "node ./bin/seed",
-    "db-init": "pg-init juke",
-    "postinstall": "npm run db-init"
+    "start": "npm run start-server & npm run build-watch",
+    "start-server": "nodemon --watch server -e js,html server/main.js",
+    "build-watch": "webpack -w",
+    "seed": "node ./bin/seed"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.17.1",
-    "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "font-awesome": "^4.7.0",
     "pg": "^7.4.1",
@@ -21,7 +20,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "sequelize": "^4.31.2",
-    "volleyball": "^1.4.1"
+    "volleyball": "^1.5.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -30,6 +29,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "nodemon": "^1.14.11",
-    "webpack": "^3.10.0"
+    "webpack": "^4.16.1",
+    "webpack-cli": "^3.1.0"
   }
 }

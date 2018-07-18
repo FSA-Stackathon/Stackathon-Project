@@ -1,6 +1,5 @@
 const path = require('path')
 const express = require('express')
-const bodyParser = require('body-parser')
 const volleyball = require('volleyball')
 const app = express()
 module.exports = app
@@ -9,8 +8,8 @@ module.exports = app
 app.use(volleyball)
 
 // Body parsing middleware
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
 
 // Static file-serving middleware
 app.use(express.static(path.join(__dirname, '..', 'public')))
