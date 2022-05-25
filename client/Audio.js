@@ -25,24 +25,6 @@ const Audio = () => {
   const [currentSongList, setCurrentSongList] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  // constructor () {
-  //   super()
-  //   this.state = {
-  //     currentSong: {},
-  //     currentSongList: [],
-  //     isPlaying: false
-  //   }
-
-  //   this.toggle = this.toggle.bind(this)
-  //   this.toggleOne = this.toggleOne.bind(this)
-  //   this.next = this.next.bind(this)
-  //   this.prev = this.prev.bind(this)
-  // }
-
-  // componentDidMount () {
-  //   AUDIO.addEventListener('ended', () => this.next())
-  // }
-
   useEffect(() => {
     AUDIO.addEventListener("ended", () => next());
 
