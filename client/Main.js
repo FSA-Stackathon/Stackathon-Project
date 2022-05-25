@@ -1,63 +1,53 @@
-import React from 'react'
-import axios from 'axios'
-import Sidebar from './Sidebar'
-import SingleAlbum from './SingleAlbum'
-import AlbumsList from './AlbumsList'
-import Player from './Player'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Sidebar from "./Sidebar";
+import SingleAlbum from "./SingleAlbum";
+import AlbumsList from "./AlbumsList";
+import Player from "./Player";
 
-export default class Main extends React.Component {
-  constructor () {
-    super()
-    this.state = {
-      albums: [],
-      selectedAlbum: {}
+const Main = (props) => {
+  const { next, prev, toggle, toggleOne, currentSong, isPlaying } = props;
+
+  const [albums, setAlbums] = useState([]);
+  const [selectedAlbum, setSelectedAlbum] = useState({});
+
+  useEffect(() => {
+    async function fetchAlbums() {
+      const { data } = await axios.get("/api/albums");
+      setAlbums(data);
     }
-    this.pickAlbum = this.pickAlbum.bind(this)
-    this.deselectAlbum = this.deselectAlbum.bind(this)
-  }
+    fetchAlbums();
+  }, []);
 
-  async componentDidMount () {
-    const {data} = await axios.get('/api/albums')
-    this.setState({
-      albums: data
-    })
-  }
-
-  pickAlbum (albumId) {
+  function pickAlbum(albumId) {
     return async () => {
-      const {data} = await axios.get(`/api/albums/${albumId}`)
-      this.setState({
-        selectedAlbum: data
-      })
-    }
+      const { data } = await axios.get(`/api/albums/${albumId}`);
+      setSelectedAlbum(data);
+    };
   }
 
-  deselectAlbum () {
-    this.setState({
-      selectedAlbum: {}
-    })
+  function deselectAlbum() {
+    setSelectedAlbum({});
   }
 
-  render () {
-    const {next, prev, toggle, toggleOne, currentSong, isPlaying} = this.props
-
-    return (
-      <div id='main' className='row container'>
-        <Sidebar deselectAlbum={this.deselectAlbum} />
-        <div className='container'>
-          {
-            this.state.selectedAlbum.id
-              ? <SingleAlbum
-                album={this.state.selectedAlbum}
-                toggleOne={toggleOne}
-                isPlaying={isPlaying}
-                currentSong={currentSong}
-              />
-              : <AlbumsList albums={this.state.albums} pickAlbum={this.pickAlbum} />
-          }
-        </div>
-        <Player prev={prev} next={next} toggle={toggle} isPlaying={isPlaying} />
+  return (
+    <div id="main" className="row container">
+      <Sidebar deselectAlbum={deselectAlbum} />
+      <div className="container">
+        {selectedAlbum.id ? (
+          <SingleAlbum
+            album={selectedAlbum}
+            toggleOne={toggleOne}
+            isPlaying={isPlaying}
+            currentSong={currentSong}
+          />
+        ) : (
+          <AlbumsList albums={albums} pickAlbum={pickAlbum} />
+        )}
       </div>
-    )
-  }
-}
+      <Player prev={prev} next={next} toggle={toggle} isPlaying={isPlaying} />
+    </div>
+  );
+};
+
+export default Main;

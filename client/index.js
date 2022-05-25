@@ -1,8 +1,7 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import Audio from './Audio'
+import React from "react";
+import { createRoot } from "react-dom/client";
+import Audio from "./Audio";
 
-ReactDOM.render(
-  <Audio />,
-  document.getElementById('app')
-)
+const root = createRoot(document.getElementById("app"));
+
+root.render(<Audio />);
