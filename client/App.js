@@ -13,3 +13,6 @@ const App = () => {
 }
 
 export default App
+
+const list = [1, 2, 3];
+
