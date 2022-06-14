@@ -1,6 +1,5 @@
 # FS-App-Template
 
-test
 
 ## Setup
 
