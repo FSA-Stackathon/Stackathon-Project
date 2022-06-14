@@ -1,0 +1,56 @@
+Users => (User.hasOne(Cart))
+Attributes:
+
+- Id (id) => PK
+- name (str)
+- username (str)
+- password (str)
+- email (str)
+- user_type (ENUM.('Customer', 'Guest', 'Admin/Owner'))
+- created_at (date obj)
+- updated_at (date obj)
+
+Products (Product.hasMany())
+Attributes:
+
+- Id (int) => PK
+- name (str)
+- price (int)
+- category_id (int)
+- inventory (int)
+- cart_id (int)
+
+Orders => (Order.hasMany(OrderDetail))
+Attributes:
+
+- Id (int) => PK
+- name (str)
+- user_id (int)
+- status (bool) => delivered / not delivered
+- order_total (float)
+- created_at (date obj)
+- updated_at (date obj)
+
+OrderDetails (belongs to order) (belongs to product)
+Attributes:
+
+- Id (int) => PK
+- name (str)
+- order_id (int)
+- product_id (int)
+- price (int)
+  /\*
+
+* User is logged in and adds products to the local state.
+* User hits submit button, which associates user to cart.
+  \*/
+
+Cart => (Cart.hasMany(Products))
+Attributes:
+
+- Id (int) => PK
+- user_id (int)
+- quantity (int)
+- total (float)
+- created_at (date obj)
+- updated_at (date obj)
