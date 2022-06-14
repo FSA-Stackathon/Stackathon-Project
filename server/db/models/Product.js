@@ -8,7 +8,7 @@ const Product = db.define('product', {
     validate: { notEmpty: true },
   },
   type: {
-    type: Sequelize.ENUM('snowboard', 'skis'),
+    type: Sequelize.ENUM('snowboard', 'ski'),
     defaultValue: 'snowboard',
   },
   price: {
