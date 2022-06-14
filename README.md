@@ -1,7 +1,5 @@
 # FS-App-Template
 
-Leland Kowal
-change # 2
 
 ## Setup
 
