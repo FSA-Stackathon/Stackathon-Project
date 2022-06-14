@@ -1,9 +1,9 @@
-const Sequelize = require("sequelize");
-const db = require("../db");
+const Sequelize = require('sequelize');
+const db = require('../db');
 // importing Product
-const Product = require("./models/Product");
+const Product = require('./Product');
 
-const OrderDetail = db.define("order_detail", {
+const OrderDetail = db.define('order_detail', {
   product_quantity: {
     type: Sequelize.INTEGER,
   },
@@ -16,4 +16,4 @@ OrderDetail.prototype.productTotal = async function () {
   return prodTotal;
 };
 
-module.exports = OrderDetails;
+module.exports = OrderDetail;
