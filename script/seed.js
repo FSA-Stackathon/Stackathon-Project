@@ -31,6 +31,11 @@ async function seed() {
   console.log(`seeded successfully`);
 }
 
+
+//A user is created through post request or seed
+//A cart is created for that user and then it's assigned to the user
+
+
 /*
  We've separated the `seed` function from the `runSeed` function.
  This way we can isolate the error handling and exit trapping.
