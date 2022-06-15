@@ -11,11 +11,13 @@ const snowboardData = JSON.parse(fs.readFileSync('SnowboardData.json', 'utf8'));
 const skiData = JSON.parse(fs.readFileSync('SkiData.json', 'utf8'));
 const userData = JSON.parse(fs.readFileSync('UserData.json', 'utf8'));
 
-console.log('HERES USER DATA, ', userData);
-/**
+// console.log('HERES USER DATA, ', userData);
+/*
+ *
  * seed - this function clears the database, updates tables to
  *      match the models, and populates the database.
  */
+
 async function seed() {
   await db.sync({ force: true }); // clears db and matches models to tables
   console.log('db synced!');
