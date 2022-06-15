@@ -2,7 +2,7 @@
 
 const {
   db,
-  models: { User, Product },
+  models: { User, Product, CartDetail },
 } = require('../server/db');
 
 const fs = require('fs');
@@ -27,6 +27,7 @@ async function seed() {
   const snowboards = await Promise.all(
     snowboardData.map((snowboard) => Product.create(snowboard))
   );
+
   console.log(
     `seeded ${users.length} users and ${skis.length} skis and ${snowboards.length} snowboards`
   );

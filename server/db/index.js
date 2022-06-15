@@ -24,6 +24,25 @@ CartDetail.belongsTo(Order);
 User.hasMany(Order);
 Order.belongsTo(User);
 
+//User is created and assigned a cart
+const createAndAssignCart = async (user) => {
+  const cart = await Cart.create({ cartEmpty: true });
+  await user.setCart(cart);
+};
+
+User.afterCreate(createAndAssignCart);
+
+//Cart is updating to isEmpty = false
+// const initialAddToCart = async (cart, product, quantity) => {
+//   const cartDetail = await CartDetail.create({ product_quantity: 0 })
+
+//   cartDetail.product_quantity += quantity
+//   await product.setCartDetail(cartDetail);
+//   console.log(cartDetail.product_quantity)
+// }
+
+// CartDetail.afterCreate(initialAddToCart)
+
 module.exports = {
   db,
   models: {
