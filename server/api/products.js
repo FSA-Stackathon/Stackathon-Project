@@ -1,3 +1,5 @@
+const { requireToken } = require('./GateKeepingMiddleWare');
+
 const router = require('express').Router();
 const {
   models: { Product, CartDetail, Cart },
@@ -78,6 +80,27 @@ router.get('/getcart/:userId', async (req, res, next) => {
       where: { userId: req.params.userId },
     });
     res.send(cart);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.put('/:productId/:userId', requireToken, async (req, res, next) => {
+  try {
+    console.log(req.user);
+    const cart = await Cart.findOne({
+      where: { userId: req.params.userId },
+    });
+
+    const cartItem = await cart.getCart_details({
+      where: { productId: req.params.productId },
+    });
+    const singleCartItem = cartItem[0];
+
+    //product_quantity is hardcoded. Need to update
+    await singleCartItem.update({ product_quantity: 100 });
+
+    res.json(singleCartItem);
   } catch (err) {
     next(err);
   }
