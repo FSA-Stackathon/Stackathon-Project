@@ -13,6 +13,7 @@ const Navbar = ({handleLogout, isLoggedIn, createGuestUser}) => (
           <Link to="/home">Home</Link>
           <Link to="/" href="#" onClick={handleLogout}>logout</Link>
           <Link to="/products">Snowboards & Skis</Link>
+          <Link to="/cart">🛒</Link>
         </div>
       ) : (
         <div>
@@ -21,6 +22,7 @@ const Navbar = ({handleLogout, isLoggedIn, createGuestUser}) => (
           <Link to="/signup">Sign Up</Link>
           <Link to="/guest" onClick={createGuestUser}>Continue as Guest</Link>
           <Link to="/">Landing</Link>
+          <Link to="/cart">🛒</Link>
         </div>
       )}
     </nav>

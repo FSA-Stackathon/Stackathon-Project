@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchProduct } from '../store/singleProduct';
+import { fetchProduct, addToCart } from '../store/singleProduct';
 
 class SingleProduct extends Component {
   componentDidMount() {
@@ -8,25 +8,33 @@ class SingleProduct extends Component {
   }
 
   render() {
+    const { product, addItemToCart, user } = this.props;
     return (
       <div>
         <h1>Welcome to the single product page!</h1>
         <h3>Product Details</h3>
         <ul>
-          <li>Name: {this.props.product.name}</li>
-          <li>Price: ${this.props.product.price}</li>
-          <li>Type: {this.props.product.type}</li>
-          <li>Inventory: {this.props.product.inventory}</li>
+          <li>Name: {product.name}</li>
+          <li>Price: ${product.price}</li>
+          <li>Type: {product.type}</li>
+          <li>Inventory: {product.inventory}</li>
         </ul>
+        <button onClick={() => addItemToCart(product.id, user.id)}>
+          Add to Cart
+        </button>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({ product: state.product });
+const mapStateToProps = (state) => ({
+  product: state.product,
+  user: state.auth,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   getProduct: (id) => dispatch(fetchProduct(id)),
+  addItemToCart: (productId, userId) => dispatch(addToCart(productId, userId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleProduct);

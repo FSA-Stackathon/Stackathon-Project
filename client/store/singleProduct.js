@@ -4,12 +4,20 @@ const TOKEN = 'token';
 
 // Action Types
 export const GET_SINGLE_PRODUCT = 'GET_SINGLE_PRODUCT';
+export const ADD_TO_CART = 'ADD_TO_CART';
 
 // Action Creators
 export const setProduct = (product) => {
   return {
     type: GET_SINGLE_PRODUCT,
     product,
+  };
+};
+
+export const setCart = (cart) => {
+  return {
+    type: ADD_TO_CART,
+    cart,
   };
 };
 
@@ -29,6 +37,21 @@ export const fetchProduct = (id) => async (dispatch) => {
     console.error(err);
   }
 };
+<<<<<<< HEAD
+=======
+
+export const addToCart = (productId, userId) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.post(`/api/products/${productId}/${userId}`);
+      dispatch(setCart(data));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+};
+
+>>>>>>> main
 /*
  *Reducer
  **/
