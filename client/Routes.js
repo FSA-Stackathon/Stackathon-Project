@@ -8,12 +8,13 @@ import {me} from './store'
 import AllProducts from './components/AllProducts';
 import SingleProduct from './components/SingleProduct';
 import Landing from './components/LandingPage';
+import Cart from './components/Cart';
 
 /**
  * COMPONENT
  */
 class Routes extends Component {
-  
+
   componentDidMount() {
     this.props.loadInitialData()
   }
@@ -28,6 +29,7 @@ class Routes extends Component {
             <Route path="/home" component={Home} />
             <Route exact path='/products' component={AllProducts} />
             <Route exact path='/products/:id' component={SingleProduct} />
+            <Route path='/cart' component={Cart} />
             <Redirect to="/products" />
           </Switch>
         ) : (
@@ -38,6 +40,7 @@ class Routes extends Component {
             <Route path="/guest" component={AllProducts} />
             <Route path='/products' exact component={AllProducts} />
             <Route path='/products/:id' component={SingleProduct} />
+            <Route path='/cart' component={Cart} />
           </Switch>
         )}
       </div>
