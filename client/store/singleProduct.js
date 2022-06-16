@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const TOKEN = 'token';
+
 // Action Types
 export const GET_SINGLE_PRODUCT = 'GET_SINGLE_PRODUCT';
 export const ADD_TO_CART = 'ADD_TO_CART';
@@ -20,16 +22,22 @@ export const setCart = (cart) => {
 };
 
 // Thunk Creators
-export const fetchProduct = (id) => {
-  return async (dispatch) => {
-    try {
-      const { data } = await axios.get(`/api/products/${id}`);
-      dispatch(setProduct(data));
-    } catch (err) {
-      console.error(err);
+export const fetchProduct = (id) => async (dispatch) => {
+  try {
+    const token = window.localStorage.getItem(TOKEN);
+    if (token) {
+      const { data } = await axios.get(`/api/products/${id}`, {
+        headers: {
+          authorization: token,
+        },
+      });
+      return dispatch(setProduct(data));
     }
-  };
+  } catch (err) {
+    console.error(err);
+  }
 };
+
 
 export const addToCart = (productId, userId) => {
   return async (dispatch) => {
@@ -41,6 +49,7 @@ export const addToCart = (productId, userId) => {
     }
   };
 };
+
 
 /*
  *Reducer
