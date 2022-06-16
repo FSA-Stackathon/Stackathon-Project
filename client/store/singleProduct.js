@@ -2,6 +2,7 @@ import axios from 'axios';
 
 // Action Types
 export const GET_SINGLE_PRODUCT = 'GET_SINGLE_PRODUCT';
+export const ADD_TO_CART = 'ADD_TO_CART';
 
 // Action Creators
 export const setProduct = (product) => {
@@ -11,12 +12,30 @@ export const setProduct = (product) => {
   };
 };
 
+export const setCart = (cart) => {
+  return {
+    type: ADD_TO_CART,
+    cart,
+  };
+};
+
 // Thunk Creators
 export const fetchProduct = (id) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get(`/api/products/${id}`);
       dispatch(setProduct(data));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+};
+
+export const addToCart = (productId, userId) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.post(`/api/products/${productId}/${userId}`);
+      dispatch(setCart(data));
     } catch (err) {
       console.error(err);
     }
