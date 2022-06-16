@@ -37,8 +37,7 @@ export const fetchProduct = (id) => async (dispatch) => {
     console.error(err);
   }
 };
-<<<<<<< HEAD
-=======
+
 
 export const addToCart = (productId, userId) => {
   return async (dispatch) => {
@@ -51,7 +50,7 @@ export const addToCart = (productId, userId) => {
   };
 };
 
->>>>>>> main
+
 /*
  *Reducer
  **/

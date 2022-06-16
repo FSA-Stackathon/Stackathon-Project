@@ -81,7 +81,9 @@ router.get('/getcart/:userId', async (req, res, next) => {
   try {
     const cart = await Cart.findOne({
       where: { userId: req.params.userId },
+
       include: { model: CartDetail, include: { model: Product } },
+
     });
     res.send(cart);
   } catch (err) {
@@ -89,8 +91,10 @@ router.get('/getcart/:userId', async (req, res, next) => {
   }
 });
 
+
 // PUT /api/products/:productId/:userId
 router.put('/:productId/:userId', requireToken, async (req, res, next) => {
+
   try {
     console.log(req.user);
     const cart = await Cart.findOne({
