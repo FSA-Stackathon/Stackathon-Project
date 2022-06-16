@@ -24,6 +24,14 @@ CartDetail.belongsTo(Order);
 User.hasMany(Order);
 Order.belongsTo(User);
 
+//User is created and assigned a cart
+const createAndAssignCart = async (user) => {
+  const cart = await Cart.create({ cartEmpty: true });
+  await user.setCart(cart);
+};
+
+User.afterCreate(createAndAssignCart);
+
 module.exports = {
   db,
   models: {
