@@ -9,7 +9,7 @@ export const Home = props => {
 
   return (
     <div>
-      <h3>Welcome, {email}</h3>
+      <h3>Hello, {(email === 'guestUser@me.com') ? 'Guest' : email} !</h3>
     </div>
   )
 }
