@@ -78,6 +78,7 @@ router.get('/getcart/:userId', async (req, res, next) => {
   try {
     const cart = await Cart.findOne({
       where: { userId: req.params.userId },
+      include: CartDetail,
     });
     res.send(cart);
   } catch (err) {
