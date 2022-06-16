@@ -1,9 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {logout} from '../store'
+import {logout, authenticate} from '../store'
 
-const Navbar = ({handleClick, isLoggedIn}) => (
+const Navbar = ({handleLogout, isLoggedIn, createGuestUser}) => (
   <div>
     <h1>Trekkies Snowboard & Skis</h1>
     <nav>
@@ -11,15 +11,16 @@ const Navbar = ({handleClick, isLoggedIn}) => (
         <div>
           {/* The navbar will show these links after you log in */}
           <Link to="/home">Home</Link>
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
+          <Link to="/" href="#" onClick={handleLogout}>logout</Link>
+          <Link to="/products">Snowboards & Skis</Link>
         </div>
       ) : (
         <div>
           {/* The navbar will show these links before you log in */}
           <Link to="/login">Login</Link>
           <Link to="/signup">Sign Up</Link>
+          <Link to="/guest" onClick={createGuestUser}>Continue as Guest</Link>
+          <Link to="/">Landing</Link>
         </div>
       )}
     </nav>
@@ -38,9 +39,12 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    handleClick() {
+    handleLogout() {
       dispatch(logout())
-    }
+    },
+    createGuestUser() {
+      dispatch(authenticate('guestUser@me.com', 'guestPW', 'signup', 'guestUser', 'guestUser'))
+    },
   }
 }
 
