@@ -53,7 +53,6 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/:productId/:userId', async (req, res, next) => {
   try {
-    // const { quantity } = req.body;
     const createCartDetail = await CartDetail.create({
       product_quantity: 7,
       productId: req.params.productId,
@@ -66,7 +65,7 @@ router.post('/:productId/:userId', async (req, res, next) => {
 
     await cart.update(addToCart);
     await cart.update({ cartEmpty: false });
-    console.log(await cart.getCart_details());
+
     res.json(cart);
   } catch (err) {
     next(err);
@@ -78,7 +77,7 @@ router.get('/getcart/:userId', async (req, res, next) => {
     const cart = await Cart.findOne({
       where: { userId: req.params.userId },
     });
-    console.log(await cart.getCart_details());
+    res.send(cart);
   } catch (err) {
     next(err);
   }
