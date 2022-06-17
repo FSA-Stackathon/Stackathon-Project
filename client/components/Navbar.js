@@ -45,7 +45,7 @@ const mapDispatch = dispatch => {
       dispatch(logout())
     },
     createGuestUser() {
-      dispatch(authenticate('guestUser@me.com', 'guestPW', 'signup', 'guestUser', 'guestUser'))
+      dispatch(authenticate('guestUser@me.com', 'guestPW', 'signup', 'guestUser', 'guestUser', 'guest'))
     },
   }
 }
