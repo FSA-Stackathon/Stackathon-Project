@@ -1,4 +1,4 @@
-const { requireToken } = require('./GateKeepingMiddleWare');
+const { requireToken } = require('./GateKeepingMiddleWare.js');
 
 const router = require('express').Router();
 const {
@@ -77,13 +77,11 @@ router.post('/:productId/:userId', async (req, res, next) => {
 });
 
 // GET /api/products//getcart/:userId
-router.get('/getcart/:userId', async (req, res, next) => {
+router.get('/getcart', requireToken, async (req, res, next) => {
   try {
     const cart = await Cart.findOne({
-      where: { userId: req.params.userId },
-
+      where: { userId: req.user.id },
       include: { model: CartDetail, include: { model: Product } },
-
     });
     res.send(cart);
   } catch (err) {
@@ -91,14 +89,11 @@ router.get('/getcart/:userId', async (req, res, next) => {
   }
 });
 
-
 // PUT /api/products/:productId/:userId
-router.put('/:productId/:userId', requireToken, async (req, res, next) => {
-
+router.put('/:productId', requireToken, async (req, res, next) => {
   try {
-    console.log(req.user);
     const cart = await Cart.findOne({
-      where: { userId: req.params.userId },
+      where: { userId: req.user.id },
     });
 
     const cartItem = await cart.getCart_details({
@@ -138,10 +133,10 @@ router.post('/orders', async (req, res, next) => {
   }
 });
 
-router.delete('/:userId/:productId', async (req, res, next) => {
+router.delete('/:productId', requireToken, async (req, res, next) => {
   try {
     const cart = await Cart.findOne({
-      where: { userId: req.params.userId },
+      where: { userId: req.user.id },
     });
     const cartItem = await cart.getCart_details({
       where: { productId: req.params.productId },
