@@ -1,60 +1,60 @@
-import axios from 'axios'
-import history from '../history'
-
-const TOKEN = 'token'
+import axios from 'axios';
+import history from '../history';
 
 /**
  * ACTION TYPES
  */
-const SET_AUTH = 'SET_AUTH'
+const SET_AUTH = 'SET_AUTH';
 
 /**
  * ACTION CREATORS
  */
-const setAuth = auth => ({type: SET_AUTH, auth})
+const setAuth = (auth) => ({ type: SET_AUTH, auth });
 
 /**
  * THUNK CREATORS
  */
-export const me = () => async dispatch => {
-  const token = window.localStorage.getItem(TOKEN)
-  if (token) {
-    const res = await axios.get('/auth/me', {
-      headers: {
-        authorization: token
-      }
-    })
-    return dispatch(setAuth(res.data))
-  }
-}
+export const me = () => async (dispatch) => {
+  const res = await axios.get('/auth/me');
+  return dispatch(setAuth(res.data));
+};
 
-export const authenticate = (email, password, method, firstname, lastname) => async dispatch => {
+export const authenticate =
+  (email, password, method, firstname, lastname) => async (dispatch) => {
+    try {
+      const res = await axios.post(`/auth/${method}`, {
+        email,
+        password,
+        first_name: firstname,
+        last_name: lastname,
+      });
+
+      dispatch(me());
+    } catch (authError) {
+      return dispatch(setAuth({ error: authError }));
+    }
+  };
+
+export const logout = () => async (dispatch) => {
   try {
-    const res = await axios.post(`/auth/${method}`, {email, password, first_name: firstname, last_name: lastname})
-    window.localStorage.setItem(TOKEN, res.data.token)
-    dispatch(me())
-  } catch (authError) {
-    return dispatch(setAuth({error: authError}))
-  }
-}
+    const res = await axios.delete('/auth');
 
-export const logout = () => {
-  window.localStorage.removeItem(TOKEN)
-  history.push('/login')
-  return {
-    type: SET_AUTH,
-    auth: {}
+    dispatch(setAuth({}));
+    return history.push('/');
+  } catch (err) {
+    console.log('delete error', err);
+    return dispatch(setAuth({ error: err }));
   }
-}
+};
 
 /**
  * REDUCER
  */
-export default function(state = {}, action) {
+export default function (state = {}, action) {
   switch (action.type) {
     case SET_AUTH:
-      return action.auth
+      return action.auth;
     default:
-      return state
+      return state;
   }
 }

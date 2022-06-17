@@ -26,18 +26,13 @@ export const fetchProduct = (id) => async (dispatch) => {
   try {
     const token = window.localStorage.getItem(TOKEN);
     if (token) {
-      const { data } = await axios.get(`/api/products/${id}`, {
-        headers: {
-          authorization: token,
-        },
-      });
+      const { data } = await axios.get(`/api/products/${id}`);
       return dispatch(setProduct(data));
     }
   } catch (err) {
     console.error(err);
   }
 };
-
 
 export const addToCart = (productId, userId) => {
   return async (dispatch) => {
@@ -49,7 +44,6 @@ export const addToCart = (productId, userId) => {
     }
   };
 };
-
 
 /*
  *Reducer
