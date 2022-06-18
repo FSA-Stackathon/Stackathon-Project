@@ -7,7 +7,7 @@ import ProductOrdering from './ProductOrdering';
 export default function AllTheProducts(props) {
   const { products } = useContext(ProductContext);
   const [sortedProducts, setSortedProducts] = useState([]);
-  console.log('SORTED PROD ATP L 10', sortedProducts);
+
   const finalProds = sortedProducts.length > 0 ? sortedProducts : products;
 
   return (
