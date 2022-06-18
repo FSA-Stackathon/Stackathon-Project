@@ -61,7 +61,6 @@ router.get('/me', requireToken, async (req, res, next) => {
 });
 
 router.delete('/', requireToken, async (req, res, next) => {
-  console.log('delete button was pressed backend');
   res.clearCookie('token', {
     httpOnly: true,
     sameSite: 'strict',

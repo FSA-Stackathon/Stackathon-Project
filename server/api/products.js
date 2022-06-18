@@ -46,15 +46,13 @@ router.get('/ski', async (req, res, next) => {
 // GET /api/products/getcart/
 router.get('/getcart', requireToken, async (req, res, next) => {
   try {
-    console.log('in get cart');
     const cart = await Cart.findOne({
       where: { userId: req.user.id },
       include: { model: CartDetail, include: { model: Product } },
     });
-    console.log('second in get cart');
+
     res.send(cart);
   } catch (err) {
-    console.log('error in get cart');
     next(err);
   }
 });
@@ -62,7 +60,6 @@ router.get('/getcart', requireToken, async (req, res, next) => {
 // GET /api/products/:id
 router.get('/:id', requireToken, async (req, res, next) => {
   try {
-    console.log(req.user.id);
     const singlProduct = await Product.findByPk(req.params.id);
     res.json(singlProduct);
   } catch (err) {
