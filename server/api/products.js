@@ -1,5 +1,4 @@
 const { requireToken } = require('./GateKeepingMiddleWare');
-
 const router = require('express').Router();
 const {
   models: { Product, Cart, Order },
@@ -66,7 +65,5 @@ router.get('/:id', async (req, res, next) => {
     next(err);
   }
 });
-
-
 
 module.exports = router;
