@@ -1,37 +1,72 @@
-import React, { Component } from 'react';
+import React, { Component, createContext } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { fetchProducts } from '../store/products';
+
+import products, { fetchProducts } from '../store/products';
+
+import AllTheProducts from './AllTheProducts';
+import AllSkis from './Skis';
+import AllSnowboards from './Snowboards';
+
+export const ProductContext = createContext();
 
 class AllProducts extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedFilter: '',
+    };
+    this.changeFilter = this.changeFilter.bind(this);
+  }
   componentDidMount() {
     this.props.getProducts();
   }
 
+  componentDidUpdate(prevState, prevProps) {
+    if (prevProps.selectedFilter !== this.state.selectedFilter) {
+      this.props.getProducts();
+    }
+  }
+
+  changeFilter(evt) {
+    this.setState({
+      selectedFilter: evt.target.value,
+    });
+  }
+
   render() {
+    const { products } = this.props;
+    console.log('THIS STATE', this.state);
     return (
-      <div id="all-products">
-        <h1
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          Welcome to the all products page!
-        </h1>
-        <h3>Product List:</h3>
-        <ul>
-          {this.props.products.map((product) => (
-            <li key={product.id}>
-              {product.name}
-              <Link to={`/products/${product.id}`}>
-                <button>view</button>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ProductContext.Provider value={{ products }}>
+        <div id="all-products">
+          <h1
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            Welcome to the all products page!
+          </h1>
+          <h2>Filter The Products</h2>
+          <select onChange={this.changeFilter}>
+            <option value="All">All</option>
+            <option value="Skis">Skis</option>
+            <option value="Snowboards">Snowboards</option>
+          </select>
+          <div id="store-components" className="store-components">
+            {this.state.selectedFilter === 'All' ? (
+              <AllTheProducts />
+            ) : this.state.selectedFilter === 'Skis' ? (
+              <AllSkis />
+            ) : this.state.selectedFilter === 'Snowboards' ? (
+              <AllSnowboards />
+            ) : (
+              <AllTheProducts />
+            )}
+          </div>
+        </div>
+      </ProductContext.Provider>
     );
   }
 }
