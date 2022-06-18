@@ -43,6 +43,22 @@ router.get('/ski', async (req, res, next) => {
   }
 });
 
+// GET /api/products/getcart/
+router.get('/getcart', requireToken, async (req, res, next) => {
+  try {
+    console.log('in get cart');
+    const cart = await Cart.findOne({
+      where: { userId: req.user.id },
+      include: { model: CartDetail, include: { model: Product } },
+    });
+    console.log('second in get cart');
+    res.send(cart);
+  } catch (err) {
+    console.log('error in get cart');
+    next(err);
+  }
+});
+
 // GET /api/products/:id
 router.get('/:id', requireToken, async (req, res, next) => {
   try {
@@ -54,15 +70,15 @@ router.get('/:id', requireToken, async (req, res, next) => {
   }
 });
 
-// POST /api/products/:productId/:userId
-router.post('/:productId/:userId', async (req, res, next) => {
+// POST /api/products/:productId
+router.post('/:productId/', requireToken, async (req, res, next) => {
   try {
     const createCartDetail = await CartDetail.create({
       product_quantity: 7,
       productId: req.params.productId,
     });
     const cart = await Cart.findOne({
-      where: { userId: req.params.userId },
+      where: { userId: req.user.id },
     });
 
     const addToCart = await cart.addCart_detail(createCartDetail);
@@ -76,20 +92,7 @@ router.post('/:productId/:userId', async (req, res, next) => {
   }
 });
 
-// GET /api/products//getcart/:userId
-router.get('/getcart', requireToken, async (req, res, next) => {
-  try {
-    const cart = await Cart.findOne({
-      where: { userId: req.user.id },
-      include: { model: CartDetail, include: { model: Product } },
-    });
-    res.send(cart);
-  } catch (err) {
-    next(err);
-  }
-});
-
-// PUT /api/products/:productId/:userId
+// PUT /api/products/:productId
 router.put('/:productId', requireToken, async (req, res, next) => {
   try {
     const cart = await Cart.findOne({
@@ -110,15 +113,15 @@ router.put('/:productId', requireToken, async (req, res, next) => {
   }
 });
 
-router.post('/orders', async (req, res, next) => {
+router.post('/orders', requireToken, async (req, res, next) => {
   try {
     const order = await Order.create({
-      userId: 2,
+      userId: req.user.id,
       order_total: 0,
       order_status: false,
     });
 
-    const cart = await Cart.findOne({ where: { userId: 2 } });
+    const cart = await Cart.findOne({ where: { userId: req.user.id } });
 
     //create the association between cart_details and order
     const cartDetails = await cart.getCart_details();
