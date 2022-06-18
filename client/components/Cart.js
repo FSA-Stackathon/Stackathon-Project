@@ -6,7 +6,7 @@ import { fetchCart, removeItem } from '../store/cart';
 class Cart extends Component {
   componentDidMount() {
     this.props.getCart();
-    console.log('GET CART FIRED MOUNTING');
+
   }
 
   render() {

@@ -20,6 +20,7 @@ const _removeItem = (cart) => {
 };
 
 // Thunk Creators
+
 //GET SINGLE CART
 export const fetchCart = () => async (dispatch) => {
   try {
@@ -35,6 +36,7 @@ export const removeItem = (productId) => {
   return async (dispatch) => {
     try {
       const data = await axios.delete(`/api/carts/${productId}`);
+
       dispatch(_removeItem(data));
     } catch (err) {
       console.error(err);

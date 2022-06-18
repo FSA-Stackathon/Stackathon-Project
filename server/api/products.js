@@ -43,6 +43,20 @@ router.get('/ski', async (req, res, next) => {
   }
 });
 
+// GET /api/products/getcart/
+router.get('/getcart', requireToken, async (req, res, next) => {
+  try {
+    const cart = await Cart.findOne({
+      where: { userId: req.user.id },
+      include: { model: CartDetail, include: { model: Product } },
+    });
+
+    res.send(cart);
+  } catch (err) {
+    next(err);
+  }
+});
+
 // GET /api/products/:id
 router.get('/:id', async (req, res, next) => {
   try {
@@ -52,5 +66,7 @@ router.get('/:id', async (req, res, next) => {
     next(err);
   }
 });
+
+
 
 module.exports = router;
