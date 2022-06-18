@@ -5,7 +5,7 @@ import { fetchCart, removeItem } from '../store/cart';
 
 class Cart extends Component {
   componentDidMount() {
-    this.props.getCart(this.props.user.id);
+    this.props.getCart();
   }
 
   render() {
@@ -14,7 +14,7 @@ class Cart extends Component {
     return (
       <div>
         <h1>Shopping Cart</h1>
-        <Link to='/checkout'>
+        <Link to="/checkout">
           <button>Proceed to Checkout</button>
         </Link>
         <hr></hr>
@@ -38,7 +38,7 @@ class Cart extends Component {
                     backgroundColor: 'transparent',
                     border: 'none',
                   }}
-                  onClick={() => removeItemFromCart(user.id, item.product.id)}
+                  onClick={() => removeItemFromCart(item.product.id)}
                 >
                   ❌
                 </button>
@@ -46,15 +46,15 @@ class Cart extends Component {
                 <li>Product Name: {item.product.name}</li>
                 <li>Price: ${item.product.price}</li>
                 <li>Quanity: {item.product_quantity}</li>
-                <select style={{ width: '50px' }} name='quanity'>
-                  <option value='1'>1</option>
-                  <option value='2'>2</option>
-                  <option value='3'>3</option>
-                  <option value='4'>4</option>
-                  <option value='5'>5</option>
-                  <option value='6'>6</option>
-                  <option value='7'>7</option>
-                  <option value='8'>8</option>
+                <select style={{ width: '50px' }} name="quanity">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
                 </select>
               </div>
             ))}
@@ -65,9 +65,8 @@ class Cart extends Component {
 
 const mapStateToProps = (state) => ({ cart: state.cart, user: state.auth });
 const mapDispatchToProps = (dispatch) => ({
-  getCart: (id) => dispatch(fetchCart(id)),
-  removeItemFromCart: (userId, productId) =>
-    dispatch(removeItem(userId, productId)),
+  getCart: () => dispatch(fetchCart()),
+  removeItemFromCart: (productId) => dispatch(removeItem(productId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

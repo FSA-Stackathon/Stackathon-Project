@@ -20,10 +20,11 @@ const _removeItem = (cart) => {
 };
 
 // Thunk Creators
-export const fetchCart = (id) => {
+export const fetchCart = () => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.get(`/api/products/getcart/${id}`);
+      const { data } = await axios.get(`/api/products/getcart`);
+
       dispatch(setCart(data));
     } catch (err) {
       console.error(err);
@@ -31,12 +32,10 @@ export const fetchCart = (id) => {
   };
 };
 
-export const removeItem = (userId, productId) => {
+export const removeItem = (productId) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.delete(
-        `/api/products/${userId}/${productId}`
-      );
+      const { data } = await axios.delete(`/api/products/${productId}`);
       dispatch(_removeItem(data));
     } catch (err) {
       console.error(err);
