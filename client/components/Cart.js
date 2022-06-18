@@ -1,16 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchCart, removeItem } from '../store/cart';
+import { fetchCart, removeItem, updateCart } from '../store/cart';
 
 class Cart extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      productId: 0,
+    };
+    this.changeQuantity = this.changeQuantity.bind(this);
+  }
+
   componentDidMount() {
     this.props.getCart();
+  }
 
+  changeQuantity(evt) {
+    this.setState({ productId: evt.target.id });
+    this.props.updateCart(evt.target.value, evt.target.id);
   }
 
   render() {
-    const { cart, removeItemFromCart, user } = this.props;
+    const { cart, removeItemFromCart } = this.props;
     const { cart_details } = cart;
     return (
       <div>
@@ -47,7 +59,12 @@ class Cart extends Component {
                 <li>Product Name: {item.product.name}</li>
                 <li>Price: ${item.product.price}</li>
                 <li>Quanity: {item.product_quantity}</li>
-                <select style={{ width: '50px' }} name="quanity">
+                <select
+                  style={{ width: '50px' }}
+                  name="quanity"
+                  id={item.product.id}
+                  onChange={this.changeQuantity}
+                >
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -68,6 +85,8 @@ const mapStateToProps = (state) => ({ cart: state.cart, user: state.auth });
 const mapDispatchToProps = (dispatch) => ({
   getCart: () => dispatch(fetchCart()),
   removeItemFromCart: (productId) => dispatch(removeItem(productId)),
+  updateCart: (productId, productQuantity) =>
+    dispatch(updateCart(productId, productQuantity)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);
