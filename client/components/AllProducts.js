@@ -1,8 +1,6 @@
 import React, { Component, createContext } from 'react';
 import { connect } from 'react-redux';
-
 import products, { fetchProducts } from '../store/products';
-
 import AllTheProducts from './AllTheProducts';
 import AllSkis from './Skis';
 import AllSnowboards from './Snowboards';
@@ -21,12 +19,6 @@ class AllProducts extends Component {
     this.props.getProducts();
   }
 
-  componentDidUpdate(prevState, prevProps) {
-    if (prevProps.selectedFilter !== this.state.selectedFilter) {
-      this.props.getProducts();
-    }
-  }
-
   changeFilter(evt) {
     this.setState({
       selectedFilter: evt.target.value,
@@ -35,7 +27,6 @@ class AllProducts extends Component {
 
   render() {
     const { products } = this.props;
-    console.log('THIS STATE', this.state);
     return (
       <ProductContext.Provider value={{ products }}>
         <div id="all-products">
