@@ -33,6 +33,8 @@ class Cart extends Component {
         <hr></hr>
         {cart_details === undefined
           ? 'Cart Empty'
+          : cart_details.length === 0
+          ? 'Cart Empty'
           : cart_details.map((item) => (
               <div
                 style={{
