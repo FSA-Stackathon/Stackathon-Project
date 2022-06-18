@@ -30,9 +30,9 @@ const mapStateToProps = (state) => ({
   user: state.auth,
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch, { history }) => ({
   getProduct: (id) => dispatch(fetchProduct(id)),
-  addItemToCart: (productId) => dispatch(addToCart(productId)),
+  addItemToCart: (productId) => dispatch(addToCart(productId, history)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleProduct);
