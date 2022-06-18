@@ -1,8 +1,8 @@
-const { requireToken } = require('./GateKeepingMiddleWare.js');
+const { requireToken } = require('./GateKeepingMiddleWare');
 
 const router = require('express').Router();
 const {
-  models: { Product, CartDetail, Cart, Order },
+  models: { Product, Cart, Order },
 } = require('../db');
 
 // GET /api/products
@@ -58,7 +58,7 @@ router.get('/getcart', requireToken, async (req, res, next) => {
 });
 
 // GET /api/products/:id
-router.get('/:id', requireToken, async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
     const singlProduct = await Product.findByPk(req.params.id);
     res.json(singlProduct);
@@ -67,86 +67,6 @@ router.get('/:id', requireToken, async (req, res, next) => {
   }
 });
 
-// POST /api/products/:productId
-router.post('/:productId/', requireToken, async (req, res, next) => {
-  try {
-    const createCartDetail = await CartDetail.create({
-      product_quantity: 7,
-      productId: req.params.productId,
-    });
-    const cart = await Cart.findOne({
-      where: { userId: req.user.id },
-    });
 
-    const addToCart = await cart.addCart_detail(createCartDetail);
-
-    await cart.update(addToCart);
-    await cart.update({ cartEmpty: false });
-
-    res.json(cart);
-  } catch (err) {
-    next(err);
-  }
-});
-
-// PUT /api/products/:productId
-router.put('/:productId', requireToken, async (req, res, next) => {
-  try {
-    const cart = await Cart.findOne({
-      where: { userId: req.user.id },
-    });
-
-    const cartItem = await cart.getCart_details({
-      where: { productId: req.params.productId },
-    });
-    const singleCartItem = cartItem[0];
-
-    //product_quantity is hardcoded. Need to update
-    await singleCartItem.update({ product_quantity: 100 });
-
-    res.json(singleCartItem);
-  } catch (err) {
-    next(err);
-  }
-});
-
-router.post('/orders', requireToken, async (req, res, next) => {
-  try {
-    const order = await Order.create({
-      userId: req.user.id,
-      order_total: 0,
-      order_status: false,
-    });
-
-    const cart = await Cart.findOne({ where: { userId: req.user.id } });
-
-    //create the association between cart_details and order
-    const cartDetails = await cart.getCart_details();
-    await order.addCart_details(cartDetails);
-
-    //removes the association between cart and cart_details
-    await cart.removeCart_details();
-
-    res.json(order);
-  } catch (err) {
-    next(err);
-  }
-});
-
-router.delete('/:productId', requireToken, async (req, res, next) => {
-  try {
-    const cart = await Cart.findOne({
-      where: { userId: req.user.id },
-    });
-    const cartItem = await cart.getCart_details({
-      where: { productId: req.params.productId },
-    });
-
-    await cartItem[0].destroy();
-    res.send(cartItem);
-  } catch (err) {
-    next(err);
-  }
-});
 
 module.exports = router;

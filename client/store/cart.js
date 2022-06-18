@@ -20,22 +20,23 @@ const _removeItem = (cart) => {
 };
 
 // Thunk Creators
-export const fetchCart = () => {
-  return async (dispatch) => {
-    try {
-      const { data } = await axios.get(`/api/products/getcart`);
 
-      dispatch(setCart(data));
-    } catch (err) {
-      console.error(err);
-    }
-  };
+//GET SINGLE CART
+export const fetchCart = () => async (dispatch) => {
+  try {
+    const { data } = await axios.get('/api/carts/getCart');
+    dispatch(setCart(data));
+  } catch (err) {
+    console.error(err);
+  }
 };
 
+//DELETE SINGLE CART (ALL QUANTITY)
 export const removeItem = (productId) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.delete(`/api/products/${productId}`);
+      const data = await axios.delete(`/api/carts/${productId}`);
+
       dispatch(_removeItem(data));
     } catch (err) {
       console.error(err);
@@ -51,7 +52,7 @@ export default function (state = {}, action) {
     case GET_CART:
       return action.cart;
     case REMOVE_ITEM_FROM_CART:
-      const actionProduct = action.cart.find((product) => product);
+      const actionProduct = action.cart.data.find((product) => product);
       const cart_details = state.cart_details.filter(
         (product) => product.id !== actionProduct.id
       );

@@ -10,7 +10,7 @@ class AllProducts extends Component {
 
   render() {
     return (
-      <div id='all-products'>
+      <div id="all-products">
         <h1
           style={{
             display: 'flex',
@@ -24,10 +24,10 @@ class AllProducts extends Component {
         <ul>
           {this.props.products.map((product) => (
             <li key={product.id}>
-            {product.name}
-            <Link to={`/products/${product.id}`}>
-              <button>view</button>
-            </Link>
+              {product.name}
+              <Link to={`/products/${product.id}`}>
+                <button>view</button>
+              </Link>
             </li>
           ))}
         </ul>

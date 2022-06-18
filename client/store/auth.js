@@ -38,12 +38,10 @@ export const authenticate =
 export const logout = () => async (dispatch) => {
   try {
     const res = await axios.delete('/auth');
-
     dispatch(setAuth({}));
     return history.push('/');
   } catch (err) {
-    console.log('delete error', err);
-    return dispatch(setAuth({ error: err }));
+    console.error(err);
   }
 };
 
