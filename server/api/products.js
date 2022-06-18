@@ -1,7 +1,7 @@
 const { requireToken } = require('./GateKeepingMiddleWare');
 const router = require('express').Router();
 const {
-  models: { Product, Cart, Order },
+  models: { Product, Cart, Order, CartDetail },
 } = require('../db');
 
 // GET /api/products

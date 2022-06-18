@@ -22,7 +22,7 @@ router.get('/getCart', requireToken, async (req, res, next) => {
 router.post('/:productId', requireToken, async (req, res, next) => {
   try {
     const createCartDetail = await CartDetail.create({
-      product_quantity: 7,
+      product_quantity: 1,
       productId: req.params.productId,
     });
     const cart = await Cart.findOne({
@@ -40,22 +40,26 @@ router.post('/:productId', requireToken, async (req, res, next) => {
   }
 });
 
-// PUT /api/carts/:productId
-router.put('/:productId/', requireToken, async (req, res, next) => {
+// PUT /api/carts
+router.put('/', requireToken, async (req, res, next) => {
   try {
+    const { productId, quantity } = req.body;
     const cart = await Cart.findOne({
       where: { userId: req.user.id },
+      include: { model: CartDetail, include: { model: Product } },
     });
 
     const cartItem = await cart.getCart_details({
-      where: { productId: req.params.productId },
+      where: { productId: productId },
     });
     const singleCartItem = cartItem[0];
 
     //product_quantity is hardcoded. Need to update
-    await singleCartItem.update({ product_quantity: 100 });
+    await singleCartItem.update({
+      product_quantity: quantity,
+    });
 
-    res.json(singleCartItem);
+    res.json(cart);
   } catch (err) {
     next(err);
   }
