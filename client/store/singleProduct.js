@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-const TOKEN = 'token';
-
 // Action Types
 export const GET_SINGLE_PRODUCT = 'GET_SINGLE_PRODUCT';
 export const ADD_TO_CART = 'ADD_TO_CART';
@@ -22,34 +20,27 @@ export const setCart = (cart) => {
 };
 
 // Thunk Creators
+//GET SINGLE PRODUCT (LIST)
 export const fetchProduct = (id) => async (dispatch) => {
   try {
-    const token = window.localStorage.getItem(TOKEN);
-    if (token) {
-      const { data } = await axios.get(`/api/products/${id}`, {
-        headers: {
-          authorization: token,
-        },
-      });
-      return dispatch(setProduct(data));
-    }
+    const { data } = await axios.get(`/api/products/${id}`);
+    return dispatch(setProduct(data));
   } catch (err) {
     console.error(err);
   }
 };
 
-
-export const addToCart = (productId, userId) => {
+//POST INTO CART
+export const addToCart = (productId) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.post(`/api/products/${productId}/${userId}`);
+      const { data } = await axios.post(`/api/carts/${productId}`);
       dispatch(setCart(data));
     } catch (err) {
       console.error(err);
     }
   };
 };
-
 
 /*
  *Reducer
@@ -58,6 +49,8 @@ export default function (state = {}, action) {
   switch (action.type) {
     case GET_SINGLE_PRODUCT:
       return action.product;
+    case ADD_TO_CART:
+      return { ...state, ...action.cart };
     default:
       return state;
   }

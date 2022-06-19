@@ -19,9 +19,7 @@ class SingleProduct extends Component {
           <li>Type: {product.type}</li>
           <li>Inventory: {product.inventory}</li>
         </ul>
-        <button onClick={() => addItemToCart(product.id, user.id)}>
-          Add to Cart
-        </button>
+        <button onClick={() => addItemToCart(product.id)}>Add to Cart</button>
       </div>
     );
   }
@@ -34,7 +32,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getProduct: (id) => dispatch(fetchProduct(id)),
-  addItemToCart: (productId, userId) => dispatch(addToCart(productId, userId)),
+  addItemToCart: (productId) => dispatch(addToCart(productId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleProduct);

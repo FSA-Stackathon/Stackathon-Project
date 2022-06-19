@@ -7,7 +7,16 @@ module.exports = router;
 
 router.post('/login', async (req, res, next) => {
   try {
-    res.send({ token: await User.authenticate(req.body) });
+    const { email, password } = req.body;
+    const token = await User.authenticate({ email, password });
+    res.cookie('token', token, {
+      httpOnly: true,
+      sameSite: 'strict',
+      // secure: true,
+      // secure is disabled for development
+      signed: true,
+    });
+    res.send('User has logged in successfully');
   } catch (err) {
     next(err);
   }
@@ -15,8 +24,21 @@ router.post('/login', async (req, res, next) => {
 
 router.post('/signup', async (req, res, next) => {
   try {
-    const user = await User.create(req.body);
-    res.send({ token: await user.generateToken() });
+    const { email, password, first_name, last_name } = req.body;
+
+    const user = await User.create({ email, password, first_name, last_name });
+
+    const token = await user.generateToken();
+
+    res.cookie('token', token, {
+      httpOnly: true,
+      sameSite: 'strict',
+      // secure: true,
+      // secure is disabled for development
+      signed: true,
+    });
+
+    res.send('User is signed up');
   } catch (err) {
     if (err.name === 'SequelizeUniqueConstraintError') {
       res.status(401).send('User already exists');
@@ -28,8 +50,21 @@ router.post('/signup', async (req, res, next) => {
 
 router.get('/me', requireToken, async (req, res, next) => {
   try {
-    res.send(await User.findByToken(req.headers.authorization));
+    if (req.user) {
+      res.send(req.user);
+    } else {
+      res.sendStatus(404);
+    }
   } catch (ex) {
     next(ex);
   }
+});
+
+router.delete('/', requireToken, async (req, res, next) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    sameSite: 'strict',
+    signed: true,
+  });
+  res.send();
 });
