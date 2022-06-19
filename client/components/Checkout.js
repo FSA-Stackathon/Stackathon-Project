@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchCart } from '../store/cart';
+import { fetchCart, checkoutCart } from '../store/cart';
 
 class Checkout extends Component {
   constructor() {
@@ -31,14 +31,14 @@ class Checkout extends Component {
   render() {
     const { firstName, lastName, address, zipCode } = this.state;
     const { city, state, phoneNumber } = this.state;
-    const { cart } = this.props;
+    const { cart, checkout } = this.props;
     const { cart_details } = cart;
     const cartTotal =
       cart_details === undefined
         ? 0
         : cart_details.reduce((acc, item) => {
-            acc +=
-              parseInt(item.product_quantity) * parseInt(item.product.price);
+            const total = Math.round(parseFloat(item.product_quantity) * parseFloat(item.product.price));
+            acc += total
             return acc;
           }, 0);
     return (
@@ -113,18 +113,19 @@ class Checkout extends Component {
                   />
                 </div>
               </div>
-              <Link to='/confirmation'>
-                <button
-                  style={{
-                    width: '500px',
-                    marginLeft: '50px',
-                    border: '2px solid black',
-                  }}
-                >
-                  Submit Purchase Order
-                </button>
-              </Link>
             </form>
+            <Link to='/confirmation'>
+              <button
+                style={{
+                  width: '500px',
+                  marginLeft: '50px',
+                  border: '2px solid black',
+                }}
+                onClick={() => checkout(cartTotal)}
+              >
+                Submit Purchase Order
+              </button>
+            </Link>
           </div>
           <div style={{ marginLeft: '700px', border: '1px solid black' }}>
             <h3 style={{ marginLeft: '10px' }}>Order Total: ${cartTotal}</h3>
@@ -169,6 +170,9 @@ class Checkout extends Component {
 }
 
 const mapState = (state) => ({ cart: state.cart });
-const mapDispatch = (dispatch) => ({ getCart: () => dispatch(fetchCart()) });
+const mapDispatch = (dispatch) => ({
+  getCart: () => dispatch(fetchCart()),
+  checkout: (orderTotal) => dispatch(checkoutCart(orderTotal)),
+});
 
 export default connect(mapState, mapDispatch)(Checkout);

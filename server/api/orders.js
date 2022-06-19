@@ -1,5 +1,5 @@
 const {
-  models: { Cart, Order },
+  models: { Cart, Order, CartDetail },
 } = require('../db');
 const router = require('express').Router();
 const { requireToken } = require('./GateKeepingMiddleWare');
@@ -10,18 +10,18 @@ router.post('/', requireToken, async (req, res, next) => {
   try {
     const order = await Order.create({
       userId: req.user.id,
-      order_total: 0,
+      order_total: req.orderTotal,
       order_status: false,
     });
 
-    const cart = await Cart.findOne({ where: { userId: 2 } });
+    const cart = await Cart.findOne({ where: { userId: req.user.id }, include: CartDetail });
 
     //create the association between cart_details and order
     const cartDetails = await cart.getCart_details();
     await order.addCart_details(cartDetails);
 
     //removes the association between cart and cart_details
-    await cart.removeCart_details();
+    await cart.removeCart_details(cartDetails);
 
     res.json(order);
   } catch (err) {
