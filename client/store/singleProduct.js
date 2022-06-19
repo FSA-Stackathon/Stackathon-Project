@@ -31,11 +31,10 @@ export const fetchProduct = (id) => async (dispatch) => {
 };
 
 //POST INTO CART
-export const addToCart = (productId, history) => {
+export const addToCart = (productId) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.post(`/api/carts/${productId}`);
-      history.push('/cart');
       dispatch(setCart(data));
     } catch (err) {
       console.error(err);

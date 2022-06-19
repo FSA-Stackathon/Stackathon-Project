@@ -9,6 +9,8 @@ import AllProducts from './components/AllProducts';
 import SingleProduct from './components/SingleProduct';
 import Landing from './components/LandingPage';
 import Cart from './components/Cart';
+import Checkout from './components/Checkout';
+import Confirmation from './components/ConfirmationPage';
 
 /**
  * COMPONENT
@@ -29,6 +31,8 @@ class Routes extends Component {
             <Route exact path="/products" component={AllProducts} />
             <Route exact path="/products/:id" component={SingleProduct} />
             <Route path="/cart" component={Cart} />
+            <Route path="/checkout" component={Checkout} />
+            <Route path="/confirmation" component={Confirmation} />
             <Redirect to="/products" />
           </Switch>
         ) : (
@@ -40,6 +44,8 @@ class Routes extends Component {
             <Route path="/products" exact component={AllProducts} />
             <Route path="/products/:id" component={SingleProduct} />
             <Route path="/cart" component={Cart} />
+            <Route path="/checkout" component={Checkout} />
+            <Route path="/confirmation" component={Confirmation} />
           </Switch>
         )}
       </div>
