@@ -37,7 +37,7 @@ class SingleProduct extends Component {
               />
               <Card.Title>{product.name}</Card.Title>
               <Card.Text>${product.price}</Card.Text>
-              <Card.Text>${product.type}</Card.Text>
+              <Card.Text>{product.type}</Card.Text>
               <Card.Text>{product.inventory}</Card.Text>
               <Button
                 className='mt-auto'

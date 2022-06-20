@@ -5,7 +5,7 @@ import { logout, authenticate } from '../store';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 
 const Navigation = ({ handleLogout, isLoggedIn, createGuestUser }) => (
-  <Navbar bg='light' variant='light'>
+  <Navbar bg='light' variant='light' sticky="top">
     <Container>
       <Navbar.Brand as={Link} to='/'>
         Trekkies Snowboard & Skis
