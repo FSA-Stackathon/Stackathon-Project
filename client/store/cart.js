@@ -56,11 +56,32 @@ export const fetchCart = (userId) => async (dispatch) => {
 
 export const updateCart = (quantity, productId, userId) => async (dispatch) => {
   try {
-    await axios.put(`/api/carts`, {
-      productId,
-      quantity,
-    });
-    dispatch(fetchCart(userId));
+    if(!userId){
+      // logic for guests cart update
+      // pull localStorage cart
+      const cart = JSON.parse(window.localStorage.getItem("cart"));
+      let cartDetailsArr = cart.cart_details;
+      // updates item in db
+      await axios.put(`/api/guests/cart`, {cartDetailsArr, productId, quantity});
+      // map throught cartDetailsArr in loc storage to find matching productId and set equal to quantity
+      cartDetailsArr.map((item) => {
+        if (item.product.id === parseInt(productId)) {
+          item.product_quantity = parseInt(quantity);
+        }
+      });
+      // seting the new cart in local storage
+      const newCartJSON = JSON.stringify(cart);
+      window.localStorage.setItem("cart", newCartJSON);
+
+      dispatch(setCart(cart));
+    } else {
+      // logic for logged in users
+      await axios.put(`/api/carts`, {
+        productId,
+        quantity,
+      });
+      dispatch(fetchCart(userId));
+    }
   } catch (err) {
     console.error(err);
   }
@@ -75,7 +96,9 @@ export const removeItem = (productId, userId) => {
         // pull localStorage cart
         const cart = JSON.parse(window.localStorage.getItem("cart"));
         let cartDetailsArr = cart.cart_details;
-        // editing cart details arr and mutating it
+        // deletes item from db
+        await axios.delete(`/api/guests/cart/${productId}`, {data: cartDetailsArr});
+        // editing cart details arr and mutating it - in the front end/local storage
         const newCartArr = cartDetailsArr.filter((item) => {
           return item.product.id !== productId;
         });

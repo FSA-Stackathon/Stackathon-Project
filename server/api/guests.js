@@ -22,22 +22,36 @@ router.post("/cart/:productId", async (req, res, next) => {
   }
 });
 
+// PUT /api/guests/cart - route to delete cart detail from guest cart
+router.put("/cart", async (req, res, next) => {
+  try {
+    const { cartDetailsArr, productId, quantity } = req.body;
+    let cartDetailToUpd;
+    cartDetailsArr.map(async (item) => {
+      if (item.product.id === parseInt(productId)) {
+        cartDetailToUpd = await CartDetail.findByPk(item.id);
+        await cartDetailToUpd.update({
+          product_quantity: parseInt(quantity),
+        });
+      }
+    });
+    res.json(cartDetailToUpd);
+  } catch (err) {
+    next(err);
+  }
+});
+
 // DELETE /api/guests/cart/:productId - route to delete cart detail from guest cart
 router.delete("/cart/:productId", async (req, res, next) => {
   try {
-    // pull localStorage cart details arr from req.body
-    // let { cartDetailsArr } = req.body;
-    // console.log('THIS IS REQ BODY:', req.body);
-    // console.log('THIS IS CART DETAILS ARR:',cartDetailsArr);
-    console.log('THIS ARE HERE');
+    const cartDetailsArr = req.body;
     let cartDetailToDestr;
     cartDetailsArr.map(async (item) => {
-        if(item.product.id === req.params.productId){
-          cartDetailToDestr = await CartDetail.findByPk(item.id);
-          await cartDetailToDestr.destroy()
-        }
+      if (item.product.id === parseInt(req.params.productId)) {
+        cartDetailToDestr = await CartDetail.findByPk(item.id);
+        await cartDetailToDestr.destroy();
+      }
     });
-    
     res.json(cartDetailToDestr);
   } catch (err) {
     next(err);

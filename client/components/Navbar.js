@@ -24,7 +24,13 @@ const Navigation = ({ handleLogout, isLoggedIn, createGuestCart }) => (
             <Nav.Link as={Link} to='/products'>
               Snowboards & Skis
             </Nav.Link>
-            <Nav.Item>
+            <Nav.Item
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
               <Cart />
             </Nav.Item>
           </Nav>
@@ -45,9 +51,15 @@ const Navigation = ({ handleLogout, isLoggedIn, createGuestCart }) => (
             <Nav.Link as={Link} to='/'>
               Landing
             </Nav.Link>
-            <Nav.Link>
+            <Nav.Item
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
               <Cart />
-            </Nav.Link>
+            </Nav.Item>
           </Nav>
         </div>
       )}

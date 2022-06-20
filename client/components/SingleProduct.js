@@ -9,24 +9,12 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
 class SingleProduct extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { cartItems: 0 };
-  }
-
   componentDidMount() {
     this.props.getProduct(this.props.match.params.id);
   }
 
-  componentDidUpdate (prevProps, prevState) {
-    if (prevState.cartItems !== this.state.cartItems) {
-      console.log('in component did update')
-      this.props.getCart(this.props.user.id);
-    }
-  }
-
   render() {
-    const { product, addItemToCart, user } = this.props;
+    const { product, addItemToCart, user, getCart } = this.props;
     return (
       <Container>
         <h1
@@ -55,8 +43,8 @@ class SingleProduct extends Component {
               <Button
                 className='mt-auto'
                 onClick={async() => {
-                  this.setState({ cartItems: this.state.cartItems + 1})
-                  addItemToCart(product.id, user.id)
+                  await addItemToCart(product.id, user.id)
+                  await getCart(user.id)
                 }}
               >
                 Add to Cart
