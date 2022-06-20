@@ -46,7 +46,9 @@ const mapDispatch = dispatch => {
       dispatch(logout());
     },
     createGuestCart(){
-      window.localStorage.setItem("cart", JSON.stringify({ cart_details: [] }));
+      if(!window.localStorage.cart){
+        window.localStorage.setItem("cart", JSON.stringify({ cart_details: [] }));
+      }
     },
     // createGuestUser() {
     //   dispatch(authenticate('guestUser@me.com', 'guestPW', 'signup', 'guestUser', 'guestUser', 'guest'))
