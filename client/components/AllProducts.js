@@ -4,6 +4,8 @@ import products, { fetchProducts } from '../store/products';
 import AllTheProducts from './AllTheProducts';
 import AllSkis from './Skis';
 import AllSnowboards from './Snowboards';
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
 
 export const ProductContext = createContext();
 
@@ -29,24 +31,27 @@ class AllProducts extends Component {
     const { products } = this.props;
     return (
       <ProductContext.Provider value={{ products }}>
-        <div id="all-products">
+        <div id='all-products'>
           <h1
             style={{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
+              color: '#808080',
+              marginBottom: '2rem'
             }}
           >
             Welcome to the all products page!
           </h1>
-          <h2>Filter The Products</h2>
-          <select onChange={this.changeFilter}>
-            <option value="All">All</option>
-            <option value="Skis">Skis</option>
-            <option value="Snowboards">Snowboards</option>
-          </select>
-          <div id="store-components" className="store-components">
-            {this.state.selectedFilter === 'All' ? (
+          <Container>
+            <Form.Select size='lg' className='mb-3' onChange={this.changeFilter}>
+              <option value='All'>All Products</option>
+              <option value='Skis'>Skis</option>
+              <option value='Snowboards'>Snowboards</option>
+            </Form.Select>
+          </Container>
+          <Container>
+          {this.state.selectedFilter === 'All' ? (
               <AllTheProducts />
             ) : this.state.selectedFilter === 'Skis' ? (
               <AllSkis />
@@ -55,7 +60,7 @@ class AllProducts extends Component {
             ) : (
               <AllTheProducts />
             )}
-          </div>
+          </Container>
         </div>
       </ProductContext.Provider>
     );

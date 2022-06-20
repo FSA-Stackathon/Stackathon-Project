@@ -2,14 +2,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchCart, removeItem, updateCart } from '../store/cart';
+import { Container, Modal, CloseButton, Button, Form } from 'react-bootstrap';
 
 class Cart extends Component {
   constructor(props) {
     super(props);
     this.state = {
       productId: 0,
+      isShowing: false,
     };
     this.changeQuantity = this.changeQuantity.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   componentDidMount() {
@@ -24,63 +28,77 @@ class Cart extends Component {
     this.props.updateCart(evt.target.value, evt.target.id, this.props.user.id);
   }
 
+  openModal() {
+    this.setState({ ...this.state, isShowing: true });
+  }
+
+  closeModal() {
+    this.setState({ ...this.state, isShowing: false });
+  }
+
   render() {
     const { cart, removeItemFromCart, user } = this.props;
     const { cart_details } = cart;
     return (
       <div>
-        <h1>Shopping Cart</h1>
-        <Link to="/checkout">
-          <button>Proceed to Checkout</button>
-        </Link>
-        <hr></hr>
-        {cart_details === undefined
-          ? 'Cart Empty'
-          : cart_details.length === 0
-          ? 'Cart Empty'
-          : cart_details.map((item) => (
-              <div
-                style={{
-                  padding: '1rem',
-                  border: '1px solid black',
-                  margin: '1rem',
-                  width: '250px',
-                }}
-                key={item.id}
+        <button
+          variant='primary'
+          style={{ backgroundColor: 'transparent', border: 'none' }}
+          onClick={this.openModal}
+        >
+          🛒
+        </button>
+        <Modal show={this.state.isShowing} onHide={this.closeModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Shopping Cart</Modal.Title>
+          </Modal.Header>
+          {cart_details === undefined
+            ? 'Cart Empty'
+            : cart_details.length === 0
+            ? 'Cart Empty'
+            : cart_details.map((item) => (
+                <Container key={item.id}>
+                  <Modal.Body>
+                    <CloseButton
+                      style={{ position: 'absolute', right: 0 }}
+                      onClick={() => removeItemFromCart(item.product.id, user.id)}
+                    />
+                    <img src={item.product.image_url}></img>
+                    <p className='mt-2'>{item.product.name}</p>
+                    <li>${item.product.price}</li>
+                    <li>Qty: {item.product_quantity}</li>
+                    <Form.Select
+                      className='mt-2'
+                      style={{ width: '150px' }}
+                      name='quanity'
+                      id={item.product.id}
+                      onChange={this.changeQuantity}
+                    >
+                      <option value='1'>1</option>
+                      <option value='2'>2</option>
+                      <option value='3'>3</option>
+                      <option value='4'>4</option>
+                      <option value='5'>5</option>
+                      <option value='6'>6</option>
+                      <option value='7'>7</option>
+                      <option value='8'>8</option>
+                    </Form.Select>
+                    <hr></hr>
+                  </Modal.Body>
+                </Container>
+              ))}
+          <Modal.Footer>
+            <Link to='/checkout'>
+              <Button
+                variant='secondary'
+                style={{ width: '20rem', marginRight: '5rem' }}
+                onClick={this.closeModal}
               >
-                <button
-                  style={{
-                    position: 'absolute',
-                    right: 0,
-                    zIndex: 1,
-                    backgroundColor: 'transparent',
-                    border: 'none',
-                  }}
-                  onClick={() => removeItemFromCart(item.product.id, user.id)}
-                >
-                  ❌
-                </button>
-                <img src={item.product.image_url}></img>
-                <li>Product Name: {item.product.name}</li>
-                <li>Price: ${item.product.price}</li>
-                <li>Quanity: {item.product_quantity}</li>
-                <select
-                  style={{ width: '50px' }}
-                  name="quanity"
-                  id={item.product.id}
-                  onChange={this.changeQuantity}
-                >
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                </select>
-              </div>
-            ))}
+                Proceed to Checkout
+              </Button>
+            </Link>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }
@@ -89,7 +107,7 @@ class Cart extends Component {
 const mapStateToProps = (state) => ({ 
   // expanded to better see states being tracked...
   cart: state.cart, 
-  user: state.auth 
+  user: state.auth,
 });
 
 

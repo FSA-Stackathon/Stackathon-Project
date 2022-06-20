@@ -19,7 +19,7 @@ class Checkout extends Component {
   }
 
   componentDidMount() {
-    this.props.getCart();
+    this.props.getCart(this.props.user.id);
   }
 
   handleChange(event) {
@@ -29,7 +29,7 @@ class Checkout extends Component {
   }
 
   render() {
-    const { firstName, lastName, address, zipCode } = this.state;
+    const { firstName, lastName, address, zipCode, user } = this.state;
     const { city, state, phoneNumber } = this.state;
     const { cart, checkout } = this.props;
     const { cart_details } = cart;
@@ -169,9 +169,13 @@ class Checkout extends Component {
   }
 }
 
-const mapState = (state) => ({ cart: state.cart });
+const mapState = (state) => ({ 
+  cart: state.cart,
+  user: state.auth, 
+});
+
 const mapDispatch = (dispatch) => ({
-  getCart: () => dispatch(fetchCart()),
+  getCart: (userId) => dispatch(fetchCart(userId)),
   checkout: (orderTotal) => dispatch(checkoutCart(orderTotal)),
 });
 
