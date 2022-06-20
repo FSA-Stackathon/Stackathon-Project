@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { fetchProduct, addToCart } from '../store/singleProduct';
 
 class SingleProduct extends Component {
+  
   componentDidMount() {
     this.props.getProduct(this.props.match.params.id);
   }
@@ -19,7 +20,8 @@ class SingleProduct extends Component {
           <li>Type: {product.type}</li>
           <li>Inventory: {product.inventory}</li>
         </ul>
-        <button onClick={() => addItemToCart(product.id)}>Add to Cart</button>
+        {/* passing in this.props.user.id for determination if guest or logged in user */}
+        <button onClick={() => addItemToCart(product.id, user.id)}>Add to Cart</button>
       </div>
     );
   }
@@ -32,7 +34,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getProduct: (id) => dispatch(fetchProduct(id)),
-  addItemToCart: (productId) => dispatch(addToCart(productId)),
+  // passing in this.props.user.id for determination if guest or logged in user
+  addItemToCart: (productId, userId) => dispatch(addToCart(productId, userId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleProduct);

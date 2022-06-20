@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout, authenticate} from '../store'
 
-const Navbar = ({handleLogout, isLoggedIn, createGuestUser}) => (
+const Navbar = ({handleLogout, isLoggedIn, createGuestCart}) => (
   <div>
     <h1>Trekkies Snowboard & Skis</h1>
     <nav>
@@ -20,7 +20,8 @@ const Navbar = ({handleLogout, isLoggedIn, createGuestUser}) => (
           {/* The navbar will show these links before you log in */}
           <Link to="/login">Login</Link>
           <Link to="/signup">Sign Up</Link>
-          <Link to="/guest" onClick={createGuestUser}>Continue as Guest</Link>
+          {/* <Link to="/guest" onClick={createGuestUser}>Continue as Guest</Link> */}
+          <Link to="/products" onClick={createGuestCart}>Continue as Guest</Link>
           <Link to="/">Landing</Link>
           <Link to="/cart">🛒</Link>
         </div>
@@ -42,11 +43,14 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     handleLogout() {
-      dispatch(logout())
+      dispatch(logout());
     },
-    createGuestUser() {
-      dispatch(authenticate('guestUser@me.com', 'guestPW', 'signup', 'guestUser', 'guestUser', 'guest'))
+    createGuestCart(){
+      window.localStorage.setItem("cart", JSON.stringify({ cart_details: [] }));
     },
+    // createGuestUser() {
+    //   dispatch(authenticate('guestUser@me.com', 'guestPW', 'signup', 'guestUser', 'guestUser', 'guest'))
+    // },
   }
 }
 

@@ -14,9 +14,9 @@ class Cart extends Component {
 
   componentDidMount() {
     // Ryan added changes below...
-    console.log('THIS IS USER/AUTH:', this.props.user);
-    // 
-    this.props.getCart();
+    // console.log('THIS IS USER/AUTH:', this.props.user.id);
+    // passing in this.props.user.id for determination if guest or logged in user
+    this.props.getCart(this.props.user.id);
   }
 
   changeQuantity(evt) {
@@ -87,14 +87,15 @@ class Cart extends Component {
 }
 
 const mapStateToProps = (state) => ({ 
-  // expanded to better see...
+  // expanded to better see states being tracked...
   cart: state.cart, 
   user: state.auth 
 });
 
 
 const mapDispatchToProps = (dispatch) => ({
-  getCart: () => dispatch(fetchCart()),
+  // modified getCart - passing in this.props.user.id for determination if guest or logged in user 
+  getCart: (userId) => dispatch(fetchCart(userId)),
   removeItemFromCart: (productId) => dispatch(removeItem(productId)),
   updateCart: (productId, productQuantity) =>
     dispatch(updateCart(productId, productQuantity)),

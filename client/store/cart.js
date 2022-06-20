@@ -1,11 +1,11 @@
 /* eslint-disable no-fallthrough */
 /* eslint-disable no-case-declarations */
-import axios from 'axios';
+import axios from "axios";
 
 // Action Types
-const GET_CART = 'GET_CART';
-const REMOVE_ITEM_FROM_CART = 'REMOVE_ITEM_FROM_CART';
-const CHECKOUT_CART = 'CHECKOUT_CART';
+const GET_CART = "GET_CART";
+const REMOVE_ITEM_FROM_CART = "REMOVE_ITEM_FROM_CART";
+const CHECKOUT_CART = "CHECKOUT_CART";
 
 // Action Creators
 const setCart = (cart) => {
@@ -32,11 +32,23 @@ const _checkoutCart = (cart) => {
 // Thunk Creators
 
 //GET SINGLE CART
-export const fetchCart = () => async (dispatch) => {
+export const fetchCart = (userId) => async (dispatch) => {
   try {
-    const { data: cart } = await axios.get('/api/carts/getCart');
-    cart.cart_details.sort((a, b) => a.id - b.id);
-    dispatch(setCart(cart));
+    // logic for if customer is a guest & not logged in...
+    if (!userId) {
+      window.localStorage.cart
+        ? dispatch(setCart(JSON.parse(window.localStorage.getItem("cart"))))
+        : window.localStorage.setItem(
+            "cart",
+            JSON.stringify({ cart_details: [] })
+          );
+      dispatch(setCart(JSON.parse(window.localStorage.getItem("cart"))));
+    } else {
+      // original logic for if customer is logged in to fest & set cart...
+      const { data: cart } = await axios.get("/api/carts/getCart");
+      cart.cart_details.sort((a, b) => a.id - b.id);
+      dispatch(setCart(cart));
+    }
   } catch (err) {
     console.error(err);
   }
@@ -71,7 +83,7 @@ export const removeItem = (productId) => {
 export const checkoutCart = (orderTotal) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.post('/api/orders', orderTotal);
+      const { data } = await axios.post("/api/orders", orderTotal);
       dispatch(_checkoutCart(data));
     } catch (err) {
       console.error(err);
@@ -93,7 +105,7 @@ export default function (state = {}, action) {
       );
       return { ...state, cart_details };
     case CHECKOUT_CART:
-      return action.cart
+      return action.cart;
     default:
       return state;
   }
