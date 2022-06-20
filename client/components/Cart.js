@@ -13,6 +13,9 @@ class Cart extends Component {
   }
 
   componentDidMount() {
+    // Ryan added changes below...
+    console.log('THIS IS USER/AUTH:', this.props.user);
+    // 
     this.props.getCart();
   }
 
@@ -83,7 +86,13 @@ class Cart extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ cart: state.cart, user: state.auth });
+const mapStateToProps = (state) => ({ 
+  // expanded to better see...
+  cart: state.cart, 
+  user: state.auth 
+});
+
+
 const mapDispatchToProps = (dispatch) => ({
   getCart: () => dispatch(fetchCart()),
   removeItemFromCart: (productId) => dispatch(removeItem(productId)),
