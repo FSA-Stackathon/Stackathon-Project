@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchProduct, addToCart } from '../store/singleProduct';
+import { fetchCart } from '../store/cart';
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import CardGroup from 'react-bootstrap/CardGroup';
@@ -8,8 +9,20 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
 class SingleProduct extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { cartItems: 0 };
+  }
+
   componentDidMount() {
     this.props.getProduct(this.props.match.params.id);
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (prevState.cartItems !== this.state.cartItems) {
+      console.log('in component did update')
+      this.props.getCart();
+    }
   }
 
   render() {
@@ -37,11 +50,14 @@ class SingleProduct extends Component {
               />
               <Card.Title>{product.name}</Card.Title>
               <Card.Text>${product.price}</Card.Text>
-              <Card.Text>${product.type}</Card.Text>
+              <Card.Text>{product.type}</Card.Text>
               <Card.Text>{product.inventory}</Card.Text>
               <Button
                 className='mt-auto'
-                onClick={() => addItemToCart(product.id)}
+                onClick={async() => {
+                  this.setState({ cartItems: this.state.cartItems + 1})
+                  addItemToCart(product.id)
+                }}
               >
                 Add to Cart
               </Button>
@@ -61,6 +77,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getProduct: (id) => dispatch(fetchProduct(id)),
   addItemToCart: (productId) => dispatch(addToCart(productId)),
+  getCart: () => dispatch(fetchCart())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleProduct);

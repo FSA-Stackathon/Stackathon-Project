@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout, authenticate } from '../store';
 import { Navbar, Nav, Container } from 'react-bootstrap';
+import Cart from './Cart';
 
 const Navigation = ({ handleLogout, isLoggedIn, createGuestUser }) => (
-  <Navbar bg='light' variant='light'>
+  <Navbar bg='light' variant='light' sticky='top'>
     <Container>
       <Navbar.Brand as={Link} to='/'>
         Trekkies Snowboard & Skis
@@ -23,9 +24,9 @@ const Navigation = ({ handleLogout, isLoggedIn, createGuestUser }) => (
             <Nav.Link as={Link} to='/products'>
               Snowboards & Skis
             </Nav.Link>
-            <Nav.Link as={Link} to='/cart'>
-              🛒
-            </Nav.Link>
+            <Nav.Item>
+              <Cart />
+            </Nav.Item>
           </Nav>
         </div>
       ) : (

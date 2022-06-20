@@ -1,18 +1,18 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
 
 export default function Ordering(props) {
   const setSortedProducts = props.setSortedProducts;
   const products = props.products;
 
   return (
-    <div id="ordering-buttons">
+    <div id='ordering-buttons'>
       {'    '}
       &nbsp;&nbsp;&nbsp;
-      <button
-        id="ascending"
-        value="ascending"
-        type="button"
-        className=""
+      <Button
+        variant='light'
+        className='mb-3'
         onClick={() =>
           setSortedProducts(
             [...products].sort(function (a, b) {
@@ -32,14 +32,12 @@ export default function Ordering(props) {
         }
       >
         A - Z
-      </button>{' '}
+      </Button>{' '}
       {'    '}
       &nbsp;&nbsp;&nbsp;
-      <button
-        id="descending"
-        value="descending"
-        type="button"
-        className=""
+      <Button
+        className='mb-3'
+        variant='light'
         onClick={() =>
           setSortedProducts(
             [...products].sort(function (a, b) {
@@ -60,19 +58,17 @@ export default function Ordering(props) {
       >
         {' '}
         Z - A
-      </button>{' '}
+      </Button>{' '}
       {'    '}
       &nbsp;&nbsp;&nbsp;
-      <button
-        id="reset"
-        value="reset"
-        type="button"
-        className=""
+      <Button
+        variant='light'
+        className='mb-3'
         onClick={() => setSortedProducts(products)}
       >
         {' '}
         Reset
-      </button>
+      </Button>
     </div>
   );
 }
