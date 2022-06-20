@@ -1,53 +1,85 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {logout, authenticate} from '../store'
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { logout, authenticate } from '../store';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 
-const Navbar = ({handleLogout, isLoggedIn, createGuestUser}) => (
-  <div>
-    <h1>Trekkies Snowboard & Skis</h1>
-    <nav>
+const Navigation = ({ handleLogout, isLoggedIn, createGuestUser }) => (
+  <Navbar bg='light' variant='light'>
+    <Container>
+      <Navbar.Brand as={Link} to='/'>
+        Trekkies Snowboard & Skis
+      </Navbar.Brand>
       {isLoggedIn ? (
         <div>
           {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
-          <Link to="/" href="#" onClick={handleLogout}>logout</Link>
-          <Link to="/products">Snowboards & Skis</Link>
-          <Link to="/cart">🛒</Link>
+          <Nav>
+            <Nav.Link as={Link} to='/home'>
+              Home
+            </Nav.Link>
+            <Nav.Link as={Link} to='/' href='#' onClick={handleLogout}>
+              logout
+            </Nav.Link>
+            <Nav.Link as={Link} to='/products'>
+              Snowboards & Skis
+            </Nav.Link>
+            <Nav.Link as={Link} to='/cart'>
+              🛒
+            </Nav.Link>
+          </Nav>
         </div>
       ) : (
         <div>
           {/* The navbar will show these links before you log in */}
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
-          <Link to="/guest" onClick={createGuestUser}>Continue as Guest</Link>
-          <Link to="/">Landing</Link>
-          <Link to="/cart">🛒</Link>
+          <Nav>
+            <Nav.Link as={Link} to='/login'>
+              Login
+            </Nav.Link>
+            <Nav.Link as={Link} to='/signup'>
+              Sign Up
+            </Nav.Link>
+            <Nav.Link as={Link} to='/guest' onClick={createGuestUser}>
+              Continue as Guest
+            </Nav.Link>
+            <Nav.Link as={Link} to='/'>
+              Landing
+            </Nav.Link>
+            <Nav.Link as={Link} to='/cart'>
+              🛒
+            </Nav.Link>
+          </Nav>
         </div>
       )}
-    </nav>
-    <hr />
-  </div>
-)
+    </Container>
+  </Navbar>
+);
 
 /**
  * CONTAINER
  */
-const mapState = state => {
+const mapState = (state) => {
   return {
-    isLoggedIn: !!state.auth.id
-  }
-}
+    isLoggedIn: !!state.auth.id,
+  };
+};
 
-const mapDispatch = dispatch => {
+const mapDispatch = (dispatch) => {
   return {
     handleLogout() {
-      dispatch(logout())
+      dispatch(logout());
     },
     createGuestUser() {
-      dispatch(authenticate('guestUser@me.com', 'guestPW', 'signup', 'guestUser', 'guestUser'))
+      dispatch(
+        authenticate(
+          'guestUser@me.com',
+          'guestPW',
+          'signup',
+          'guestUser',
+          'guestUser'
+        )
+      );
     },
-  }
-}
+  };
+};
 
-export default connect(mapState, mapDispatch)(Navbar)
+export default connect(mapState, mapDispatch)(Navigation);
