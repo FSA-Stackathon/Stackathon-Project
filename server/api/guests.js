@@ -11,7 +11,12 @@ router.post("/cart/:productId", async (req, res, next) => {
       product_quantity: 1,
       productId: req.params.productId,
     });
-    res.json(createCartDetail);
+
+    const cartDetailwithProd = await CartDetail.findOne({
+        where: {id : createCartDetail.id},
+        include: { model: Product}
+    })
+    res.json(cartDetailwithProd);
   } catch (err) {
     next(err);
   }

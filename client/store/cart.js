@@ -67,12 +67,29 @@ export const updateCart = (quantity, productId) => async (dispatch) => {
 };
 
 //DELETE SINGLE CART (ALL QUANTITY)
-export const removeItem = (productId) => {
+export const removeItem = (productId, userId) => {
   return async (dispatch) => {
     try {
-      const data = await axios.delete(`/api/carts/${productId}`);
+      if(!userId){
+        // logic for delete item for guests
+        // pull localStorage cart
+        const cart = JSON.parse(window.localStorage.getItem("cart"));
+        let cartDetailsArr = cart.cart_details;
+        // editing cart details arr and mutating it
+        const newCartArr = cartDetailsArr.filter((item) => {
+          return item.product.id !== productId
+        });
+        cart.cart_details = newCartArr;
+        // seting the new cart in local storage
+        const newCartJSON = JSON.stringify(cart);
+        window.localStorage.setItem("cart", newCartJSON);
 
-      dispatch(_removeItem(data));
+        dispatch(setCart(cart));
+      } else {
+        // logic to delete item from cart if user is logged in...
+        const data = await axios.delete(`/api/carts/${productId}`);
+        dispatch(_removeItem(data));
+      }
     } catch (err) {
       console.error(err);
     }

@@ -25,7 +25,7 @@ class Cart extends Component {
   }
 
   render() {
-    const { cart, removeItemFromCart } = this.props;
+    const { cart, removeItemFromCart, user } = this.props;
     const { cart_details } = cart;
     return (
       <div>
@@ -56,7 +56,7 @@ class Cart extends Component {
                     backgroundColor: 'transparent',
                     border: 'none',
                   }}
-                  onClick={() => removeItemFromCart(item.product.id)}
+                  onClick={() => removeItemFromCart(item.product.id, user.id)}
                 >
                   ❌
                 </button>
@@ -96,7 +96,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   // modified getCart - passing in this.props.user.id for determination if guest or logged in user 
   getCart: (userId) => dispatch(fetchCart(userId)),
-  removeItemFromCart: (productId) => dispatch(removeItem(productId)),
+  removeItemFromCart: (productId, userId) => dispatch(removeItem(productId, userId)),
   updateCart: (productId, productQuantity) =>
     dispatch(updateCart(productId, productQuantity)),
 });
