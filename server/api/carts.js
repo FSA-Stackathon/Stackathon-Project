@@ -5,18 +5,6 @@ const router = require('express').Router();
 const { requireToken } = require('./GateKeepingMiddleWare');
 
 // GET /api/carts/getCart
-// router.get('/getCart', async (req, res, next) => {
-//   try {
-//     const cart = await Cart.findOne({
-//       where: { userId: 122 },
-//       include: { model: CartDetail, include: { model: Product } },
-//     });
-
-//     res.send(cart);
-//   } catch (err) {
-//     next(err);
-//   }
-// });
 router.get('/getCart', requireToken, async (req, res, next) => {
   try {
     const cart = await Cart.findOne({

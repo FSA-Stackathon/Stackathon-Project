@@ -54,13 +54,22 @@ export const fetchCart = (userId) => async (dispatch) => {
   }
 };
 
-export const updateCart = (quantity, productId) => async (dispatch) => {
+export const updateCart = (quantity, productId, userId) => async (dispatch) => {
   try {
-    await axios.put(`/api/carts`, {
-      productId,
-      quantity,
-    });
-    dispatch(fetchCart());
+    if(!userId){
+      // logic for guests
+      // pull localStorage cart
+      const cart = JSON.parse(window.localStorage.getItem("cart"));
+      let cartDetailsArr = cart.cart_details;
+      
+    } else {
+      // logic for logged in users
+      await axios.put(`/api/carts`, {
+        productId,
+        quantity,
+      });
+      dispatch(fetchCart());
+    }
   } catch (err) {
     console.error(err);
   }

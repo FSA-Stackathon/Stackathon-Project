@@ -21,7 +21,7 @@ class Cart extends Component {
 
   changeQuantity(evt) {
     this.setState({ productId: evt.target.id });
-    this.props.updateCart(evt.target.value, evt.target.id);
+    this.props.updateCart(evt.target.value, evt.target.id, this.props.user.id);
   }
 
   render() {
@@ -94,11 +94,11 @@ const mapStateToProps = (state) => ({
 
 
 const mapDispatchToProps = (dispatch) => ({
-  // modified getCart - passing in this.props.user.id for determination if guest or logged in user 
+  // modified getCart, removeItemFromCart - passing in this.props.user.id for determination if guest or logged in user 
   getCart: (userId) => dispatch(fetchCart(userId)),
   removeItemFromCart: (productId, userId) => dispatch(removeItem(productId, userId)),
-  updateCart: (productId, productQuantity) =>
-    dispatch(updateCart(productId, productQuantity)),
+  updateCart: (productId, productQuantity, userId) =>
+    dispatch(updateCart(productId, productQuantity, userId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

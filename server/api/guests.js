@@ -22,4 +22,18 @@ router.post("/cart/:productId", async (req, res, next) => {
   }
 });
 
+// DELETE /api/guests/cart/:productId - route to delete cart detail from guest cart
+// router.delete("/cart/:productId", async (req, res, next) => {
+//     try {
+//       const cartDetailtoDelete = await CartDetail.findOne({
+//           where: {id : createCartDetail.id},
+//           include: { model: Product}
+//       })
+//       res.json(cartDetailwithProd);
+//     } catch (err) {
+//       next(err);
+//     }
+//   });
+
+
 module.exports = router;
