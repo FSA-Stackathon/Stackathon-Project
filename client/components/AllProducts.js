@@ -35,11 +35,12 @@ class AllProducts extends Component {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
+              color: '#808080'
             }}
           >
             Welcome to the all products page!
           </h1>
-          <h2>Filter The Products</h2>
+          <h2 style={{ color: '#808080' }}>Filter Products</h2>
           <select onChange={this.changeFilter}>
             <option value="All">All</option>
             <option value="Skis">Skis</option>
