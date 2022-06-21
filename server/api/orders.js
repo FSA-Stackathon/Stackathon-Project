@@ -23,7 +23,6 @@ router.post('/', requireToken, async (req, res, next) => {
 
     //removes the association between cart and cart_details
     await cart.removeCart_details(cartDetails);
-    console.log(order.__proto__);
     res.json(order);
   } catch (err) {
     next(err);

@@ -40,7 +40,6 @@ class Routes extends Component {
             <Route path="/" exact component={Landing} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
-            {/* <Route path="/guest" component={AllProducts} /> */}
             <Route path="/products" exact component={AllProducts} />
             <Route path="/products/:id" component={SingleProduct} />
             <Route path="/cart" component={Cart} />
