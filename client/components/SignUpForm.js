@@ -56,7 +56,7 @@ const SignUpForm = (props) => {
                     <Form.Label htmlFor='email'>Email</Form.Label>
                     <Form.Control name='email' type='text'></Form.Control>
                     <Form.Label htmlFor='password'>Password</Form.Label>
-                    <Form.Control name='password' type='text'></Form.Control>
+                    <Form.Control name='password' type='password'></Form.Control>
                     <Button
                       variant='secondary'
                       className='mt-auto'

@@ -49,7 +49,7 @@ const AuthForm = (props) => {
                   </Col>
                   <Col style={{ width: '16rem' }}>
                     <Form.Label htmlFor='password'>Password</Form.Label>
-                    <Form.Control name='password' type='text'></Form.Control>
+                    <Form.Control name='password' type='password'></Form.Control>
                   </Col>
                   <Row>
                     <Button
