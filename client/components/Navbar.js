@@ -5,7 +5,7 @@ import { logout, authenticate } from '../store';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import Cart from './Cart';
 
-const Navigation = ({ handleLogout, isLoggedIn, createGuestUser }) => (
+const Navigation = ({ handleLogout, isLoggedIn, createGuestCart }) => (
   <Navbar bg='light' variant='light' sticky='top'>
     <Container>
       <Navbar.Brand as={Link} to='/'>
@@ -24,7 +24,13 @@ const Navigation = ({ handleLogout, isLoggedIn, createGuestUser }) => (
             <Nav.Link as={Link} to='/products'>
               Snowboards & Skis
             </Nav.Link>
-            <Nav.Item>
+            <Nav.Item
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
               <Cart />
             </Nav.Item>
           </Nav>
@@ -39,15 +45,21 @@ const Navigation = ({ handleLogout, isLoggedIn, createGuestUser }) => (
             <Nav.Link as={Link} to='/signup'>
               Sign Up
             </Nav.Link>
-            <Nav.Link as={Link} to='/guest' onClick={createGuestUser}>
+            <Nav.Link as={Link} to='/products' onClick={createGuestCart}>
               Continue as Guest
             </Nav.Link>
             <Nav.Link as={Link} to='/'>
               Landing
             </Nav.Link>
-            <Nav.Link as={Link} to='/cart'>
-              🛒
-            </Nav.Link>
+            <Nav.Item
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Cart />
+            </Nav.Item>
           </Nav>
         </div>
       )}
@@ -69,18 +81,12 @@ const mapDispatch = (dispatch) => {
     handleLogout() {
       dispatch(logout());
     },
-    createGuestUser() {
-      dispatch(
-        authenticate(
-          'guestUser@me.com',
-          'guestPW',
-          'signup',
-          'guestUser',
-          'guestUser'
-        )
-      );
+    createGuestCart(){
+      if(!window.localStorage.cart){
+        window.localStorage.setItem("cart", JSON.stringify({ cart_details: [] }));
+      }
     },
-  };
-};
+  }
+}
 
 export default connect(mapState, mapDispatch)(Navigation);

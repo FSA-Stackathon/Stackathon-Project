@@ -10,8 +10,9 @@ router.post('/', requireToken, async (req, res, next) => {
   try {
     const order = await Order.create({
       userId: req.user.id,
-      order_total: req.orderTotal,
+      order_total: req.body.orderTotal,
       order_status: false,
+      email: req.body.email,
     });
 
     const cart = await Cart.findOne({ where: { userId: req.user.id }, include: CartDetail });
@@ -22,7 +23,6 @@ router.post('/', requireToken, async (req, res, next) => {
 
     //removes the association between cart and cart_details
     await cart.removeCart_details(cartDetails);
-
     res.json(order);
   } catch (err) {
     next(err);
