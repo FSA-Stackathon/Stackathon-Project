@@ -9,8 +9,13 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
 class SingleProduct extends Component {
-  componentDidMount() {
+  constructor() {
+    super();
+    this.state = { count: 0 };
+  }
+  async componentDidMount() {
     this.props.getProduct(this.props.match.params.id);
+    await this.props.getCart();
   }
 
   render() {
@@ -26,13 +31,13 @@ class SingleProduct extends Component {
             marginBottom: '2rem',
           }}
         >
-          Welcome to the single product page!
+          Welcome {this.props.user.first_name || 'Guest'}
         </h1>
         <h3 style={{ color: '#808080' }}>Product Details</h3>
         <CardGroup>
           <Col>
             <Card
-              className='mb-2'
+              className="mb-2"
               style={{
                 width: '30rem',
                 height: '50rem',
@@ -40,16 +45,18 @@ class SingleProduct extends Component {
                 border: 'none',
               }}
             >
-              <Card.Img variant='top' src={product.image_url} />
+              <Card.Img variant="top" src={product.image_url} />
               <Card.Title>{product.name}</Card.Title>
               <Card.Text>${product.price}</Card.Text>
               <Card.Text>Inventory: {product.inventory}</Card.Text>
               <Button
-                className='mt-auto'
-                variant='secondary'
-                onClick={async () => {
-                  await addItemToCart(product.id, user.id);
-                  await getCart(user.id);
+                className="mt-auto"
+                variant="secondary"
+                onMouseDown={async () => {
+                  await this.props.getProduct(this.props.match.params.id);
+                }}
+                onMouseUp={async () => {
+                  await addItemToCart(this.props.match.params.id, user.id);
                 }}
               >
                 Add to Cart
@@ -65,6 +72,7 @@ class SingleProduct extends Component {
 const mapStateToProps = (state) => ({
   product: state.product,
   user: state.auth,
+  cart: state.cart,
 });
 
 const mapDispatchToProps = (dispatch) => ({

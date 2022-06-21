@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchCart, removeItem, updateCart } from '../store/cart';
-import { Container, Modal, CloseButton, Button, Form, Image } from 'react-bootstrap';
+import {
+  Container,
+  Modal,
+  CloseButton,
+  Button,
+  Form,
+  Image,
+} from 'react-bootstrap';
 
 class Cart extends Component {
   constructor(props) {
@@ -41,9 +48,12 @@ class Cart extends Component {
     return (
       <div>
         <button
-          variant='primary'
+          variant="primary"
           style={{ backgroundColor: 'transparent', border: 'none' }}
-          onClick={this.openModal}
+          onMouseDown={async () => {
+            await this.props.getCart(user.id);
+          }}
+          onMouseUp={this.openModal}
         >
           🛒
         </button>
@@ -70,34 +80,38 @@ class Cart extends Component {
                         removeItemFromCart(item.product.id, user.id)
                       }
                     />
-                    <Image style={{ height: '250px' }} src={item.product.image_url} fluid='true'></Image>
-                    <p className='mt-2'>{item.product.name}</p>
+                    <Image
+                      style={{ height: '250px' }}
+                      src={item.product.image_url}
+                      fluid="true"
+                    ></Image>
+                    <p className="mt-2">{item.product.name}</p>
                     <li>${item.product.price}</li>
                     <li>Qty: {item.product_quantity}</li>
                     <Form.Select
-                      className='mt-2'
+                      className="mt-2"
                       style={{ width: '150px' }}
-                      name='quanity'
+                      name="quanity"
                       id={item.product.id}
                       onChange={this.changeQuantity}
                     >
-                      <option value='1'>1</option>
-                      <option value='2'>2</option>
-                      <option value='3'>3</option>
-                      <option value='4'>4</option>
-                      <option value='5'>5</option>
-                      <option value='6'>6</option>
-                      <option value='7'>7</option>
-                      <option value='8'>8</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
                     </Form.Select>
                     <hr></hr>
                   </Modal.Body>
                 </Container>
               ))}
           <Modal.Footer>
-            <Link to='/checkout'>
+            <Link to="/checkout">
               <Button
-                variant='secondary'
+                variant="secondary"
                 style={{ width: '20rem', marginRight: '5rem' }}
                 onClick={this.closeModal}
               >

@@ -31,27 +31,31 @@ class AllProducts extends Component {
     const { products } = this.props;
     return (
       <ProductContext.Provider value={{ products }}>
-        <div id='all-products'>
+        <div id="all-products">
           <h1
             style={{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
               color: '#808080',
-              marginBottom: '2rem'
+              marginBottom: '2rem',
             }}
           >
-            Welcome to the all products page!
+            Welcome {this.props.user.first_name || 'Guest'}
           </h1>
           <Container>
-            <Form.Select size='lg' className='mb-3' onChange={this.changeFilter}>
-              <option value='All'>All Products</option>
-              <option value='Skis'>Skis</option>
-              <option value='Snowboards'>Snowboards</option>
+            <Form.Select
+              size="lg"
+              className="mb-3"
+              onChange={this.changeFilter}
+            >
+              <option value="All">All Products</option>
+              <option value="Skis">Skis</option>
+              <option value="Snowboards">Snowboards</option>
             </Form.Select>
           </Container>
           <Container>
-          {this.state.selectedFilter === 'All' ? (
+            {this.state.selectedFilter === 'All' ? (
               <AllTheProducts />
             ) : this.state.selectedFilter === 'Skis' ? (
               <AllSkis />
@@ -67,7 +71,10 @@ class AllProducts extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ products: state.products });
+const mapStateToProps = (state) => ({
+  products: state.products,
+  user: state.auth,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   getProducts: () => dispatch(fetchProducts()),
