@@ -11,6 +11,7 @@ import Button from 'react-bootstrap/Button';
 class SingleProduct extends Component {
   componentDidMount() {
     this.props.getProduct(this.props.match.params.id);
+    this.props.getCart(101);
   }
 
   render() {
@@ -44,7 +45,6 @@ class SingleProduct extends Component {
                 className='mt-auto'
                 onClick={async() => {
                   await addItemToCart(product.id, user.id)
-                  await getCart(user.id)
                 }}
               >
                 Add to Cart

@@ -11,6 +11,7 @@ import Landing from './components/LandingPage';
 import Cart from './components/Cart';
 import Checkout from './components/Checkout';
 import Confirmation from './components/ConfirmationPage';
+import AllUsers from './components/AllUsers';
 
 /**
  * COMPONENT
@@ -33,6 +34,7 @@ class Routes extends Component {
             <Route path="/cart" component={Cart} />
             <Route path="/checkout" component={Checkout} />
             <Route path="/confirmation" component={Confirmation} />
+            <Route path="/allusers" component={AllUsers} />
             <Redirect to="/products" />
           </Switch>
         ) : (

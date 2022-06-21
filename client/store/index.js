@@ -6,12 +6,14 @@ import auth from './auth'
 import products from './products'
 import product from './singleProduct'
 import cart from './cart'
+import usersReducer from './users'
 
 const reducer = combineReducers({ 
   auth, 
   products, 
   product, 
-  cart 
+  cart,
+  users: usersReducer, 
 })
 
 const middleware = composeWithDevTools(
