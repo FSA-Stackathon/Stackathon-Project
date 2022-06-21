@@ -18,15 +18,8 @@ class SingleProduct extends Component {
     this.props.getProduct(this.props.match.params.id);
   }
 
-  componentDidUpdate (prevProps, prevState) {
-    if (prevState.cartItems !== this.state.cartItems) {
-      console.log('in component did update')
-      this.props.getCart();
-    }
-  }
-
   render() {
-    const { product, addItemToCart, user } = this.props;
+    const { product, addItemToCart, user, getCart } = this.props;
     return (
       <Container>
         <h1
@@ -38,13 +31,13 @@ class SingleProduct extends Component {
           }}
         >
           Welcome to the single product page!
-        </h1 >
+        </h1>
         <h3 style={{ color: '#808080' }}>Product Details</h3>
         <CardGroup>
           <Col>
-            <Card className='mb-2' style={{ width: '30rem', height: '30rem' }}>
+            <Card className="mb-2" style={{ width: '30rem', height: '30rem' }}>
               <Card.Img
-                variant='top'
+                variant="top"
                 style={{ height: '250px' }}
                 src={product.image_url}
               />
@@ -53,10 +46,11 @@ class SingleProduct extends Component {
               <Card.Text>{product.type}</Card.Text>
               <Card.Text>{product.inventory}</Card.Text>
               <Button
-                className='mt-auto'
-                onClick={async() => {
-                  this.setState({ cartItems: this.state.cartItems + 1})
-                  addItemToCart(product.id)
+                className="mt-auto"
+                onClick={async () => {
+                  await this.setState({ cartItems: this.state.cartItems + 1 });
+                  await addItemToCart(product.id);
+                  await getCart();
                 }}
               >
                 Add to Cart
@@ -72,12 +66,13 @@ class SingleProduct extends Component {
 const mapStateToProps = (state) => ({
   product: state.product,
   user: state.auth,
+  cart: state.cart,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getProduct: (id) => dispatch(fetchProduct(id)),
   addItemToCart: (productId) => dispatch(addToCart(productId)),
-  getCart: () => dispatch(fetchCart())
+  getCart: () => dispatch(fetchCart()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleProduct);
