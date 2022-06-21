@@ -22,7 +22,7 @@ const Navigation = ({ handleLogout, isLoggedIn, createGuestCart }) => (
               logout
             </Nav.Link>
             <Nav.Link as={Link} to='/products'>
-              Snowboards & Skis
+              Products
             </Nav.Link>
             <Nav.Item
               style={{
