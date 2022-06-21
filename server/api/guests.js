@@ -1,8 +1,32 @@
 const router = require("express").Router();
 
 const {
-  models: { Product, Cart, CartDetail },
+  models: { Product, Cart, CartDetail, Order },
 } = require("../db");
+
+// POST /api/guests/checkout - route for guest cart checkout
+router.post("/checkout", async (req, res, next) => {
+  try {
+    const { orderTotal, cartDetailsArr, email } = req.body;
+
+    const order = await Order.create({
+      order_total: orderTotal,
+      order_status: true,
+      email: email,
+    });
+
+    const dbCartDetailsArr = cartDetailsArr.map(async (item) => {
+        let cartDetRow = await CartDetail.findOne({
+            where: { id: item.id }
+        })
+        await order.addCart_detail(cartDetRow)
+    });
+
+    res.json(order);
+  } catch (err) {
+    next(err);
+  }
+});
 
 // POST /api/guests/cart/:productId - route for guests to add item to localStorage cart
 router.post("/cart/:productId", async (req, res, next) => {

@@ -120,11 +120,24 @@ export const removeItem = (productId, userId) => {
 };
 
 // CHECKOUT CART
-export const checkoutCart = (orderTotal) => {
+export const checkoutCart = (orderTotal, userId, email) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.post("/api/orders", orderTotal);
-      dispatch(_checkoutCart(data));
+      if(!userId){
+        // logic for guest checkout
+        // pull localStorage cart
+        const cart = JSON.parse(window.localStorage.getItem("cart"));
+        let cartDetailsArr = cart.cart_details;
+        // axios call to post order to Order table and take care of associations
+        await axios.post(`/api/guests/checkout`, {orderTotal, cartDetailsArr, email});
+        // clear localstorage cart & cleared cart from redux store
+        window.localStorage.removeItem('cart');
+        dispatch(setCart({}));
+      } else {
+        // logic for logged in user
+        const { data } = await axios.post("/api/orders", {orderTotal, email});
+        dispatch(_checkoutCart(data));
+      }
     } catch (err) {
       console.error(err);
     }

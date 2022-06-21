@@ -18,7 +18,6 @@ class Cart extends Component {
 
   componentDidMount() {
     // Ryan added changes below...
-    // console.log('THIS IS USER/AUTH:', this.props.user.id);
     // passing in this.props.user.id for determination if guest or logged in user
     this.props.getCart(this.props.user.id);
   }

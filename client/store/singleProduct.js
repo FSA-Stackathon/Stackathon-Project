@@ -41,10 +41,7 @@ export const addToCart = (productId, userId) => {
         const cartDetailsArr = cart.cart_details;
         // creates cart details row in cart details table & returns cart details object
         const { data } = await axios.post(`/api/guests/cart/${productId}`);
-        // console.log(data);
         cartDetailsArr.push(data);
-        // console.log(`THIS IS CART DETAILS:`, cartDetailsArr)
-        // console.log(cart)
         const cartJSON = JSON.stringify(cart);
         window.localStorage.setItem("cart", cartJSON);
       } else {
