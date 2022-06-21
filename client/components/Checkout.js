@@ -1,46 +1,48 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { fetchCart, checkoutCart } from '../store/cart';
-import Cart from './Cart';
-import Container from 'react-bootstrap/Container';
-import Card from 'react-bootstrap/Card';
-import CardGroup from 'react-bootstrap/CardGroup';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { fetchCart, checkoutCart } from "../store/cart";
+import Cart from "./Cart";
+import Container from "react-bootstrap/Container";
+import Card from "react-bootstrap/Card";
+import CardGroup from "react-bootstrap/CardGroup";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
 
 class Checkout extends Component {
   constructor() {
     super();
     this.state = {
-      firstName: '',
-      lastName: '',
-      address: '',
-      zipCode: '',
-      city: '',
-      state: '',
-      phoneNumber: '',
+      firstName: "",
+      lastName: "",
+      email: "",
+      address: "",
+      zipCode: "",
+      city: "",
+      state: "",
+      phoneNumber: "",
     };
     this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
-    this.props.getCart();
+    this.props.getCart(this.props.user.id);
   }
 
   handleChange(event) {
-    console.log('event', event.target.value);
+    // console.log('event target name', event.target.name);
+    // console.log('event value', event.target.value);
     this.setState({
       [event.target.name]: event.target.value,
     });
   }
 
   render() {
-    const { firstName, lastName, address, zipCode } = this.state;
+    const { firstName, lastName, address, zipCode, email } = this.state;
     const { city, state, phoneNumber } = this.state;
-    const { cart, checkout } = this.props;
+    const { cart, checkout, user } = this.props;
     const { cart_details } = cart;
     const cartTotal =
       cart_details === undefined
@@ -56,98 +58,105 @@ class Checkout extends Component {
       <Container>
         <h1
           style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            color: '#808080',
-            marginBottom: '2rem',
-            marginTop: '2rem',
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            color: "#808080",
+            marginBottom: "2rem",
+            marginTop: "2rem",
           }}
         >
           Secure Checkout
         </h1>
         <hr></hr>
-        <h3 style={{ color: '#876218', marginBottom: '2rem' }}>
+        <h3 style={{ color: "#876218", marginBottom: "2rem" }}>
           Sign in to use your saved info and save time!
         </h3>
         <Container>
           <CardGroup>
-            <Col className='d-flex'>
+            <Col className="d-flex">
               <Card
-                className='flex-fill'
-                style={{ width: '40rem', height: '30rem' }}
+                className="flex-fill"
+                style={{ width: "40rem", height: "30rem" }}
               >
-                <Card.Title className='text-center'>
+                <Card.Title className="text-center">
                   Contact Information
                 </Card.Title>
                 <Form>
                   <Form.Group>
                     <Col>
-                      <Form.Label htmlFor='firstName'>First Name</Form.Label>
+                      <Form.Label htmlFor="firstName">First Name</Form.Label>
                       <Form.Control
-                        type='text'
+                        type="text"
                         defaultValue={firstName}
                         onChange={this.handleChange}
                       ></Form.Control>
                     </Col>
                     <Col>
-                      <Form.Label htmlFor='lastName'>Last Name</Form.Label>
+                      <Form.Label htmlFor="lastName">Last Name</Form.Label>
                       <Form.Control
-                        type='text'
+                        type="text"
                         defaultValue={lastName}
                         onChange={this.handleChange}
                       ></Form.Control>
                     </Col>
                     <Row>
-                      <Form.Label htmlFor='lastName'>Address</Form.Label>
+                      <Form.Label htmlFor="email">Email</Form.Label>
                       <Form.Control
-                        type='text'
+                        name='email'
+                        type="text"
+                        defaultValue={email}
+                        onChange={this.handleChange}
+                      ></Form.Control>
+                      <Form.Label htmlFor="lastName">Address</Form.Label>
+                      <Form.Control
+                        type="text"
                         defaultValue={address}
                         onChange={this.handleChange}
                       ></Form.Control>
-                      <Form.Label htmlFor='zipCode'>ZIP Code</Form.Label>
+                      <Form.Label htmlFor="zipCode">ZIP Code</Form.Label>
                       <Form.Control
-                        type='text'
+                        type="text"
                         defaultValue={zipCode}
                         onChange={this.handleChange}
                       ></Form.Control>
-                      <Form.Label htmlFor='lastName'>State</Form.Label>
+                      <Form.Label htmlFor="lastName">State</Form.Label>
                       <Form.Control
-                        type='text'
+                        type="text"
                         defaultValue={state}
                         onChange={this.handleChange}
                       ></Form.Control>
                     </Row>
                   </Form.Group>
                 </Form>
-                <Link to='/confirmation'>
+                <Link to="/confirmation">
                   <Button
-                    variant='primary'
-                    className='mt-auto'
+                    variant="primary"
+                    className="mt-auto"
                     style={{
-                      width: '40rem',
-                      position: 'absolute',
+                      width: "40rem",
+                      position: "absolute",
                       bottom: 0,
                     }}
-                    onClick={() => checkout(cartTotal)}
+                    onClick={() => checkout(cartTotal, user.id, this.state.email)}
                   >
                     Submit Purchase Order
                   </Button>
                 </Link>
               </Card>
               <Card
-                className='flex-fill'
-                style={{ width: '40rem', marginLeft: '5rem' }}
+                className="flex-fill"
+                style={{ width: "40rem", marginLeft: "5rem" }}
               >
                 <Card.Title>Order Total: ${cartTotal}</Card.Title>
                 <Card.Text>Your Order</Card.Text>
                 {cart_details === undefined
-                  ? 'Cart Empty'
+                  ? "Cart Empty"
                   : cart_details.map((item) => (
                       <Container key={item.id}>
                         <Card.Img
                           src={item.product.image_url}
-                          style={{ height: '100px', width: '100px' }}
+                          style={{ height: "100px", width: "100px" }}
                         />
                         <li>{item.product.name}</li>
                         <li>
@@ -165,10 +174,14 @@ class Checkout extends Component {
   }
 }
 
-const mapState = (state) => ({ cart: state.cart });
+const mapState = (state) => ({
+  cart: state.cart,
+  user: state.auth,
+});
+
 const mapDispatch = (dispatch) => ({
-  getCart: () => dispatch(fetchCart()),
-  checkout: (orderTotal) => dispatch(checkoutCart(orderTotal)),
+  getCart: (userId) => dispatch(fetchCart(userId)),
+  checkout: (orderTotal, userId, email) => dispatch(checkoutCart(orderTotal, userId, email)),
 });
 
 export default connect(mapState, mapDispatch)(Checkout);

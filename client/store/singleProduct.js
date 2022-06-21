@@ -31,11 +31,24 @@ export const fetchProduct = (id) => async (dispatch) => {
 };
 
 //POST INTO CART
-export const addToCart = (productId) => {
+export const addToCart = (productId, userId) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.post(`/api/carts/${productId}`);
-      dispatch(setCart(data));
+    // logic for if customer is a guest & not logged in...
+      if(!userId){
+        //pull localStorage cart
+        const cart = JSON.parse(window.localStorage.getItem("cart"));
+        const cartDetailsArr = cart.cart_details;
+        // creates cart details row in cart details table & returns cart details object
+        const { data } = await axios.post(`/api/guests/cart/${productId}`);
+        cartDetailsArr.push(data);
+        const cartJSON = JSON.stringify(cart);
+        window.localStorage.setItem("cart", cartJSON);
+      } else {
+        // (original) logic for if user is logged in to add to cart
+        const { data } = await axios.post(`/api/carts/${productId}`);
+        dispatch(setCart(data));
+      }
     } catch (err) {
       console.error(err);
     }

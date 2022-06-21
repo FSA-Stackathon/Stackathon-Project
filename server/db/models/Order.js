@@ -8,6 +8,9 @@ const Order = db.define('order', {
   order_status: {
     type: Sequelize.BOOLEAN,
   },
+  email: {
+    type: Sequelize.STRING,
+  },
 });
 
 module.exports = Order;

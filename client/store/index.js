@@ -7,10 +7,17 @@ import products from './products'
 import product from './singleProduct'
 import cart from './cart'
 
-const reducer = combineReducers({ auth, products, product, cart })
+const reducer = combineReducers({ 
+  auth, 
+  products, 
+  product, 
+  cart 
+})
+
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )
+
 const store = createStore(reducer, middleware)
 
 export default store
