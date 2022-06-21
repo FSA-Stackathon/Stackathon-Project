@@ -32,6 +32,17 @@ const Navigation = ({ handleLogout, isLoggedIn, createGuestCart }) => (
               }}
             >
               <Cart />
+              <Form
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginLeft: '5rem',
+                }}
+              >
+                <Form.Control type='text'></Form.Control>
+                <Button variant='secondaray'>Search</Button>
+              </Form>
             </Nav.Item>
           </Nav>
         </div>
@@ -60,12 +71,14 @@ const Navigation = ({ handleLogout, isLoggedIn, createGuestCart }) => (
             >
               <Cart />
             </Nav.Item>
-            <Form style={{
+            <Form
+              style={{
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginLeft: '5rem'
-              }}>
+                marginLeft: '5rem',
+              }}
+            >
               <Form.Control type='text'></Form.Control>
               <Button variant='secondaray'>Search</Button>
             </Form>
