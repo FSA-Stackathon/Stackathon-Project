@@ -28,26 +28,30 @@ class SingleProduct extends Component {
             justifyContent: 'center',
             alignItems: 'center',
             color: '#808080',
+            marginBottom: '2rem',
           }}
         >
-          Welcome to the single product page!
+          Welcome {this.props.user.first_name || 'Guest'}
         </h1>
         <h3 style={{ color: '#808080' }}>Product Details</h3>
         <CardGroup>
           <Col>
-            <Card className="mb-2" style={{ width: '30rem', height: '30rem' }}>
-              <Card.Img
-                variant="top"
-                style={{ height: '250px' }}
-                src={product.image_url}
-              />
+            <Card
+              className="mb-2"
+              style={{
+                width: '30rem',
+                height: '50rem',
+                color: '#4e4c4b',
+                border: 'none',
+              }}
+            >
+              <Card.Img variant="top" src={product.image_url} />
               <Card.Title>{product.name}</Card.Title>
               <Card.Text>${product.price}</Card.Text>
-              <Card.Text>{product.type}</Card.Text>
-              <Card.Text>{product.inventory}</Card.Text>
-
+              <Card.Text>Inventory: {product.inventory}</Card.Text>
               <Button
                 className="mt-auto"
+                variant="secondary"
                 onMouseDown={async () => {
                   await this.props.getProduct(this.props.match.params.id);
                 }}

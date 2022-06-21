@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchCart, removeItem, updateCart } from '../store/cart';
-import { Container, Modal, CloseButton, Button, Form } from 'react-bootstrap';
+import {
+  Container,
+  Modal,
+  CloseButton,
+  Button,
+  Form,
+  Image,
+} from 'react-bootstrap';
 
 class Cart extends Component {
   constructor(props) {
@@ -52,7 +59,9 @@ class Cart extends Component {
         </button>
         <Modal show={this.state.isShowing} onHide={this.closeModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Shopping Cart</Modal.Title>
+            <Modal.Title style={{ color: '#4e4c4b' }}>
+              Shopping Cart
+            </Modal.Title>
           </Modal.Header>
           {cart_details === undefined
             ? 'Cart Empty'
@@ -62,12 +71,20 @@ class Cart extends Component {
                 <Container key={item.id}>
                   <Modal.Body>
                     <CloseButton
-                      style={{ position: 'absolute', right: 0 }}
+                      style={{
+                        position: 'absolute',
+                        right: '1.3rem',
+                        top: '1.2rem',
+                      }}
                       onClick={() =>
                         removeItemFromCart(item.product.id, user.id)
                       }
                     />
-                    <img src={item.product.image_url}></img>
+                    <Image
+                      style={{ height: '250px' }}
+                      src={item.product.image_url}
+                      fluid="true"
+                    ></Image>
                     <p className="mt-2">{item.product.name}</p>
                     <li>${item.product.price}</li>
                     <li>Qty: {item.product_quantity}</li>

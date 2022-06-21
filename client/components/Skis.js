@@ -6,7 +6,6 @@ import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import CardGroup from 'react-bootstrap/CardGroup';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
 
 export default function AllSkis(props) {
   const { products } = useContext(ProductContext);
@@ -26,26 +25,22 @@ export default function AllSkis(props) {
             <Col key={product.id}>
               <Card
                 className='mb-2'
-                style={{ width: '30rem', height: '30rem' }}
+                style={{
+                  width: '30rem',
+                  height: '50rem',
+                  color: '#4e4c4b',
+                  border: 'none',
+                }}
               >
-                <Card.Img
-                  variant='top'
-                  style={{ height: '250px' }}
-                  src={product.image_url}
-                />
-                <Card.Title>{product.name}</Card.Title>
-                <Card.Text>${product.price}</Card.Text>
                 <Link to={`/products/${product.id}`}>
-                  <Button
-                    className='mt-auto'
-                    style={{
-                      width: '30rem',
-                      position: 'absolute',
-                      bottom: 0,
-                    }}
-                  >
-                    View Product
-                  </Button>
+                  <Card.Img variant='top' src={product.image_url} />
+                </Link>
+                <Link
+                  style={{ textDecoration: 'none', color: '#4e4c4b' }}
+                  to={`/products/${product.id}`}
+                >
+                  <Card.Title>{product.name}</Card.Title>
+                  <Card.Text>${product.price}</Card.Text>
                 </Link>
               </Card>
             </Col>

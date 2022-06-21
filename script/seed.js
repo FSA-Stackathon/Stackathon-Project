@@ -23,10 +23,10 @@ async function seed() {
   console.log('db synced!');
 
   const users = await Promise.all(userData.map((user) => User.create(user)));
-  const skis = await Promise.all(skiData.map((ski) => Product.create(ski)));
   const snowboards = await Promise.all(
     snowboardData.map((snowboard) => Product.create(snowboard))
   );
+  const skis = await Promise.all(skiData.map((ski) => Product.create(ski)));
 
   console.log(
     `seeded ${users.length} users and ${skis.length} skis and ${snowboards.length} snowboards`
