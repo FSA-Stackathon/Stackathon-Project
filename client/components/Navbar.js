@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout, authenticate } from '../store';
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container, Form, Button } from 'react-bootstrap';
 import Cart from './Cart';
 
 const Navigation = ({ handleLogout, isLoggedIn, createGuestCart }) => (
@@ -39,6 +39,9 @@ const Navigation = ({ handleLogout, isLoggedIn, createGuestCart }) => (
         <div>
           {/* The navbar will show these links before you log in */}
           <Nav>
+            <Nav.Link as={Link} to='/'>
+              Home
+            </Nav.Link>
             <Nav.Link as={Link} to='/login'>
               Login
             </Nav.Link>
@@ -46,10 +49,7 @@ const Navigation = ({ handleLogout, isLoggedIn, createGuestCart }) => (
               Sign Up
             </Nav.Link>
             <Nav.Link as={Link} to='/products' onClick={createGuestCart}>
-              Continue as Guest
-            </Nav.Link>
-            <Nav.Link as={Link} to='/'>
-              Landing
+              Products
             </Nav.Link>
             <Nav.Item
               style={{
@@ -60,6 +60,15 @@ const Navigation = ({ handleLogout, isLoggedIn, createGuestCart }) => (
             >
               <Cart />
             </Nav.Item>
+            <Form style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginLeft: '5rem'
+              }}>
+              <Form.Control type='text'></Form.Control>
+              <Button variant='secondaray'>Search</Button>
+            </Form>
           </Nav>
         </div>
       )}
@@ -81,12 +90,15 @@ const mapDispatch = (dispatch) => {
     handleLogout() {
       dispatch(logout());
     },
-    createGuestCart(){
-      if(!window.localStorage.cart){
-        window.localStorage.setItem("cart", JSON.stringify({ cart_details: [] }));
+    createGuestCart() {
+      if (!window.localStorage.cart) {
+        window.localStorage.setItem(
+          'cart',
+          JSON.stringify({ cart_details: [] })
+        );
       }
     },
-  }
-}
+  };
+};
 
 export default connect(mapState, mapDispatch)(Navigation);
