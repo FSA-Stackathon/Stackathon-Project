@@ -1,42 +1,164 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getHistory } from '../store/userProfile';
+import Container from 'react-bootstrap/Container';
+import Card from 'react-bootstrap/Card';
+import CardGroup from 'react-bootstrap/CardGroup';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Image from 'react-bootstrap/Image';
 
 /**
  * COMPONENT
  */
 
 class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      first_name: '',
+      last_name: '',
+      email: '',
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
   componentDidMount() {
     this.props.getOrderHistory();
+    this.setState({
+      first_name: this.props.user.first_name || '',
+      last_name: this.props.user.last_name || '',
+      email: this.props.user.email || '',
+    });
+  }
+
+  handleChange(evt) {
+    this.setState({
+      [evt.target.name]: evt.target.value,
+    });
+  }
+
+  handleSubmit(evt) {
+    evt.preventDefault();
+    //   this.props.updateUser({ ...this.props.user, ...this.state });
   }
 
   render() {
     const { orderHistory, user } = this.props;
-
+    const { first_name, last_name, email } = this.state;
+    const { handleSubmit, handleChange } = this;
     return (
-      <div>
-        <h1>
+      <Container>
+        <h1
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: '#808080',
+            marginBottom: '2rem',
+            marginTop: '2rem',
+          }}
+        >
           {user.first_name} {user.last_name}'s Profile
         </h1>
-        <h3>Order History:</h3>
-        {orderHistory.map((order) => {
-          return (
-            <div key={order.id}>
-              <p>Product Name: {order.cart_details[0].product.name}</p>
-              <p>Product Type: {order.cart_details[0].product.type}</p>
-              <p>Product Price: {order.cart_details[0].product.price}</p>
-              <p>Amount Purchased: {order.cart_details[0].product_quantity}</p>
-              <img
-                src={order.cart_details[0].product.image_url}
-                alt="product image"
-              />
-
-              {/* this is how you get access to product inside the map: order.cart_details[0].product */}
-            </div>
-          );
-        })}
-      </div>
+        <Container>
+          <CardGroup>
+            <Col className='d-flex'>
+              <Card
+                className='flex-fill'
+                style={{
+                  width: '40rem',
+                  height: '30rem',
+                  color: '#4e4c4b',
+                  border: 'none',
+                }}
+              >
+                <Card.Title className='text-center'>Edit Profile</Card.Title>
+                <Form onSubmit={handleSubmit}>
+                  <Form.Group>
+                    <Col style={{ width: '16rem' }}>
+                      <Form.Label htmlFor='first_name'>First Name</Form.Label>
+                      <Form.Control
+                        name='first_name'
+                        type='text'
+                        defaultValue={first_name}
+                        onChange={this.handleChange}
+                      ></Form.Control>
+                    </Col>
+                    <Col style={{ width: '16rem' }}>
+                      <Form.Label htmlFor='lastName'>Last Name</Form.Label>
+                      <Form.Control
+                        name='last_name'
+                        type='text'
+                        defaultValue={last_name}
+                        onChange={this.handleChange}
+                      ></Form.Control>
+                    </Col>
+                    <Row>
+                      <Form.Label htmlFor='email'>Email</Form.Label>
+                      <Form.Control
+                        name='email'
+                        type='text'
+                        defaultValue={email}
+                        onChange={this.handleChange}
+                      ></Form.Control>
+                    </Row>
+                  </Form.Group>
+                </Form>
+                <Button
+                  variant='secondary'
+                  className='mt-auto'
+                  type='submit'
+                  style={{
+                    width: '40rem',
+                    position: 'absolute',
+                    bottom: '5rem',
+                  }}
+                >
+                  Submit Changes
+                </Button>
+              </Card>
+              <Card
+                className='flex-fill'
+                style={{
+                  width: '40rem',
+                  marginLeft: '5rem',
+                  color: '#4e4c4b',
+                  border: 'none',
+                }}
+              >
+                <Card.Title className='text-center'>Order History</Card.Title>
+                {orderHistory.map((order) => {
+                  return (
+                    <Container key={order.id}>
+                      <Image
+                        src={order.cart_details[0].product.image_url}
+                        style={{ height: '250px' }}
+                        fluid='true'
+                      ></Image>
+                      <li>
+                        Product Name: {order.cart_details[0].product.name}
+                      </li>
+                      <li>
+                        Product Type: {order.cart_details[0].product.type}
+                      </li>
+                      <li>
+                        Product Price: {order.cart_details[0].product.price}
+                      </li>
+                      <li>Qty: {order.cart_details[0].product_quantity}</li>
+                      {/* this is how you get access to product inside the map: order.cart_details[0].product */}
+                      <hr></hr>
+                    </Container>
+                  );
+                })}
+              </Card>
+            </Col>
+          </CardGroup>
+        </Container>
+      </Container>
     );
   }
 }
@@ -56,3 +178,27 @@ const mapDispatch = (dispatch) => ({
 });
 
 export default connect(mapState, mapDispatch)(Home);
+
+{
+  /* <Form.Label htmlFor='first_name'>First Name:</Form.Label>
+<Form.Control
+  name='first_name'
+  onChange={handleChange}
+  defaultValue={first_name}
+></Form.Control>
+
+<Form.Label htmlFor='last_name'>Last Name:</Form.Label>
+<Form.Control
+  name='last_name'
+  onChange={handleChange}
+  defaultValue={last_name}
+></Form.Control>
+
+<Form.Label htmlFor='email'>Email</Form.Label>
+<Form.Control
+  name='email'
+  onChange={handleChange}
+  defaultValue={email}
+></Form.Control>
+</Form.Control> */
+}
