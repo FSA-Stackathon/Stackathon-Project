@@ -16,6 +16,7 @@ export const _getHistory = (orderHistory) => {
 export const getHistory = () => async (dispatch) => {
   try {
     const { data } = await axios.get('/api/users/userOrders');
+    console.log('THIS IS DATA', data)
     return dispatch(_getHistory(data));
   } catch (err) {
     console.error(err);
