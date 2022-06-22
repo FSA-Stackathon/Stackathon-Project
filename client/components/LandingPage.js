@@ -1,29 +1,66 @@
-import React from "react";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
 
 const Landing = (props) => {
-
   return (
-    <div>
-        <h1>Welcome to Trekkies Snowboards and Skis!</h1>
-        <h2>About Us: </h2>
-        <p>
-          What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
-          printing and typesetting industry. Lorem Ipsum has been the industry's
-          standard dummy text ever since the 1500s, when an unknown printer took
-          a galley of type and scrambled it to make a type specimen book. It has
-          survived not only five centuries, but also the leap into electronic
-          typesetting, remaining essentially unchanged. It was popularised in
-          the 1960s with the release of Letraset sheets containing Lorem Ipsum
-          passages, and more recently with desktop publishing software like
-          Aldus PageMaker including versions of Lorem Ipsum.
-        </p>
-        <p>
-          <img src="https://www.uncovercolorado.com/wp-content/uploads/2020/11/ski-resorts-in-summit-county-keystone-breckenridge-1600x800-1.jpg" />
-        </p>
-        <h2>To view products, please Login, Sign Up, or select Continue as Guest!</h2>
+    <div
+      className='container-fluid'
+      style={{
+        backgroundImage:
+          'url(https://cdn.pixabay.com/photo/2017/02/26/09/43/beatenberg-2099823_960_720.jpg)',
+        height: '100vh',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+      }}
+    >
+      <h1
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          color: '#808080',
+        }}
+      >
+        Welcome to Trekkies Snowboards and Skis!
+      </h1>
+      <Container
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: '27rem',
+        }}
+      >
+        <Link to='/login'>
+          <Button
+            style={{ marginRight: '5rem', width: '15rem', height: '3rem' }}
+            variant='secondary'
+          >
+            Login
+          </Button>
+        </Link>
+        <Link to='/signup'>
+          <Button
+            style={{ marginRight: '5rem', width: '15rem', height: '3rem' }}
+            variant='secondary'
+          >
+            Sign Up
+          </Button>
+        </Link>
+        <Link to='/products'>
+          <Button
+            style={{ marginRight: '5rem', width: '15rem', height: '3rem' }}
+            variant='secondary'
+          >
+            Guest
+          </Button>
+        </Link>
+      </Container>
     </div>
   );
 };
-
 
 export default Landing;

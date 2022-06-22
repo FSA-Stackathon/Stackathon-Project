@@ -26,6 +26,9 @@ Order.belongsTo(User);
 const createAndAssignCart = async (user) => {
   const cart = await Cart.create({ cartEmpty: true });
   await user.setCart(cart);
+  const orders = await Order.findAll({ where: { email: user.email } });
+
+  user.addOrders(orders);
 };
 
 User.afterCreate(createAndAssignCart);
