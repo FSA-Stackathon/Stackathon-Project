@@ -15,7 +15,7 @@ class SingleProduct extends Component {
   }
   async componentDidMount() {
     this.props.getProduct(this.props.match.params.id);
-    await this.props.getCart();
+    this.props.getCart(101);
   }
 
   render() {
