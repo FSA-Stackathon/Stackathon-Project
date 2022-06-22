@@ -39,6 +39,16 @@ export const addToCart = (productId, userId) => {
         //pull localStorage cart
         const cart = JSON.parse(window.localStorage.getItem('cart'));
         const cartDetailsArr = cart.cart_details;
+        if (cartDetailsArr.length > 0) {
+          cartDetailsArr.forEach((cd) => {
+            if (cd.productId === parseInt(productId, 10)) {
+              cd.product_quantity += 1;
+            }
+          });
+          const cartJSON = JSON.stringify(cart);
+          window.localStorage.setItem('cart', cartJSON);
+          return;
+        }
         // creates cart details row in cart details table & returns cart details object
         const { data } = await axios.post(`/api/guests/cart/${productId}`);
         cartDetailsArr.push(data);
