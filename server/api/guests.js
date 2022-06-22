@@ -16,10 +16,10 @@ router.post("/checkout", async (req, res, next) => {
     });
 
     const dbCartDetailsArr = cartDetailsArr.map(async (item) => {
-        let cartDetRow = await CartDetail.findOne({
-            where: { id: item.id }
-        })
-        await order.addCart_detail(cartDetRow)
+      let cartDetRow = await CartDetail.findOne({
+        where: { id: item.id },
+      });
+      await order.addCart_detail(cartDetRow);
     });
 
     res.json(order);
@@ -31,16 +31,33 @@ router.post("/checkout", async (req, res, next) => {
 // POST /api/guests/cart/:productId - route for guests to add item to localStorage cart
 router.post("/cart/:productId", async (req, res, next) => {
   try {
-    const createCartDetail = await CartDetail.create({
-      product_quantity: 1,
-      productId: req.params.productId,
-    });
+    if (req.body.cartDetailExists) {
+      console.log('***THIS IS REQ BODY', req.body.cartDetailExists['0'].id);
+      console.log('***THIS IS TYPE OF REQ BODY', typeof req.body.cartDetailExists['0'].id);
 
-    const cartDetailwithProd = await CartDetail.findOne({
-      where: { id: createCartDetail.id },
-      include: { model: Product },
-    });
-    res.json(cartDetailwithProd);
+      const cartId = req.body.cartDetailExists['0'].id
+
+      const cartDetailIncrement = await CartDetail.findByPk(cartId);
+      
+      console.log("GETTING PAST CARTDETAILS INCREMENT");
+      if (cartDetailIncrement) {
+        cartDetailIncrement.update({
+          product_quantity: cartDetailIncrement.product_quantity + 1,
+        });
+        res.json(cartDetailIncrement);
+      }
+    } else {
+      const createCartDetail = await CartDetail.create({
+        product_quantity: 1,
+        productId: req.params.productId,
+      });
+
+      const cartDetailwithProd = await CartDetail.findOne({
+        where: { id: createCartDetail.id },
+        include: { model: Product },
+      });
+      res.json(cartDetailwithProd);
+    }
   } catch (err) {
     next(err);
   }
