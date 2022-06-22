@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const stripe = require("stripe")(
-  "sk_test_51LDDEULu1feSYQRIaB1ZKOitBeyYOtxvAXiawsPvBx4YMVGFCl1KKbal8pyYi32731GAOeRAbajTMYra9cu44cZX00mHINuGZS"
+  "RYAN'S STRIPE KEY"
 );
 
 const YOUR_DOMAIN = 'http://localhost:4242';

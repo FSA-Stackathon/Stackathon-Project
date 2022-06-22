@@ -14,6 +14,22 @@ const requireToken = async (req, res, next) => {
   }
 };
 
+const isAdmin = async (req, res, next) => {
+  try {
+    if(req.user.user_type === 'admin'){
+      req.auth = true;
+      next();
+    }
+    if(req.user.user_type !== 'admin'){
+      req.auth = false;
+      return res.status(403).send('You shall not pass!')
+    }
+  } catch(err) {
+    next(err);
+  }
+}
+
 module.exports = {
   requireToken,
+  isAdmin,
 };

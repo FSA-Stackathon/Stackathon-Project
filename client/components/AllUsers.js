@@ -15,11 +15,19 @@ class AllUsers extends React.Component {
     return (
       <div>
         <div>
-          <h1>All Users in the database</h1>
+          <h1>All Users in the Database</h1>
           <h3> Users</h3>
         </div>
         <ol>
-          {}
+          {users.map(user => (
+            <li key={user.id}>
+              <ul>
+                <li>USERID: {user.id}</li>
+                <li>FIRST NAME: {user.first_name}</li>
+                <li>EMAIL: {user.email}</li>
+              </ul>
+            </li>
+          ))}
         </ol>
       </div>
     );
