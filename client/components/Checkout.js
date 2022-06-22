@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
+import { stripeCheckout } from "../store/stripeCheckout";
 
 class Checkout extends Component {
   constructor() {
@@ -42,7 +43,7 @@ class Checkout extends Component {
   render() {
     const { firstName, lastName, address, zipCode, email } = this.state;
     const { city, state, phoneNumber } = this.state;
-    const { cart, checkout, user } = this.props;
+    const { cart, checkout, user, stripeCheckout } = this.props;
     const { cart_details } = cart;
     const cartTotal =
       cart_details === undefined
@@ -150,6 +151,10 @@ class Checkout extends Component {
                     Submit Purchase Order
                   </Button>
                 </Link>
+                {/* RYAN'S STRIPE TEST BELOW
+                <Card>
+                  <Button onClick={() => {stripeCheckout()}}>TO STRIPE PAYMENT</Button>
+                </Card> */}
               </Card>
               <Card
                 className='flex-fill'
@@ -194,8 +199,8 @@ const mapState = (state) => ({
 
 const mapDispatch = (dispatch) => ({
   getCart: (userId) => dispatch(fetchCart(userId)),
-  checkout: (orderTotal, userId, email) =>
-    dispatch(checkoutCart(orderTotal, userId, email)),
+  checkout: (orderTotal, userId, email) => dispatch(checkoutCart(orderTotal, userId, email)),
+  stripeCheckout: () => dispatch(stripeCheckout()),
 });
 
 export default connect(mapState, mapDispatch)(Checkout);
