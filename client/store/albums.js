@@ -1,22 +1,22 @@
 import axios from 'axios';
 
 // Action Types
-const GET_PRODUCTS = 'GET_PRODUCTS';
+const GET_ALBUMS = 'GET_ALBUMS';
 
 // Action Creators
-const setProducts = (products) => {
+const setAlbums = (albums) => {
   return {
-    type: GET_PRODUCTS,
-    products,
+    type: GET_ALBUMS,
+    albums,
   };
 };
 
 // Thunk Creators
-export const fetchProducts = () => {
+export const fetchAlbums = () => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.get('/api/products');
-      dispatch(setProducts(data));
+      const { data } = await axios.get('/api/albums');
+      dispatch(setAlbums(data));
     } catch (err) {
       console.error(err);
     }
@@ -28,8 +28,8 @@ export const fetchProducts = () => {
  **/
 export default function (state = [], action) {
   switch (action.type) {
-    case GET_PRODUCTS:
-      return action.products;
+    case GET_ALBUMS:
+      return action.albums;
     default:
       return state;
   }

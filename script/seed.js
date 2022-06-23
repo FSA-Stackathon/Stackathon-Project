@@ -1,69 +1,96 @@
-'use strict';
-
-const {
-  db,
-  models: { User, Product, CartDetail },
-} = require('../server/db');
+#!/usr/bin/env node
 
 const fs = require('fs');
-
-const snowboardData = JSON.parse(fs.readFileSync('SnowboardData.json', 'utf8'));
-const skiData = JSON.parse(fs.readFileSync('SkiData.json', 'utf8'));
+const { db, Album, Artist, Song, User } = require('../server/db');
+const songs = JSON.parse(fs.readFileSync('songs.json', 'utf8'));
 const userData = JSON.parse(fs.readFileSync('UserData.json', 'utf8'));
 
-// console.log('HERES USER DATA, ', userData);
-/*
- *
- * seed - this function clears the database, updates tables to
- *      match the models, and populates the database.
- */
+const seed = async () => {
+  await db.sync({ force: true });
 
-async function seed() {
-  await db.sync({ force: true }); // clears db and matches models to tables
-  console.log('db synced!');
+  // artists
+  const dexter = await Artist.create({ name: 'Dexter Britain' });
+  const jets = await Artist.create({ name: 'Jets Overhead' });
+  const nin = await Artist.create({ name: 'Nine Inch Nails' });
 
-  const users = await Promise.all(userData.map((user) => User.create(user)));
-  const snowboards = await Promise.all(
-    snowboardData.map((snowboard) => Product.create(snowboard))
+  // albums
+  const ccv2 = await Album.create({
+    name: 'Creative Commons Volume 2',
+    artistId: dexter.id,
+    artworkUrl:
+      'https://learndotresources.s3.amazonaws.com/workshop/58cff0e769468300041ef9fd/creative_commons_vol_2.jpeg',
+  });
+  const zenith = await Album.create({
+    name: 'Zenith',
+    artistId: dexter.id,
+    artworkUrl:
+      'https://learndotresources.s3.amazonaws.com/workshop/58cff0e769468300041ef9fd/zenith.jpeg',
+  });
+  const noNations = await Album.create({
+    name: 'No Nations (Instrumentals)',
+    artistId: jets.id,
+    artworkUrl:
+      'https://learndotresources.s3.amazonaws.com/workshop/58cff0e769468300041ef9fd/no_nations.jpeg',
+  });
+  const ghosts = await Album.create({
+    name: 'Ghosts I-IV',
+    artistId: nin.id,
+    artworkUrl:
+      'https://learndotresources.s3.amazonaws.com/workshop/58cff0e769468300041ef9fd/ghosts_i-iv.jpeg',
+  });
+  const theSlip = await Album.create({
+    name: 'The Slip',
+    artistId: nin.id,
+    artworkUrl:
+      'https://learndotresources.s3.amazonaws.com/workshop/58cff0e769468300041ef9fd/the_slip.jpeg',
+  });
+
+  const artists = {
+    'Dexter Britain': dexter,
+    'Nine Inch Nails': nin,
+    'Jets Overhead': jets,
+  };
+
+  const albums = {
+    'Creative Commons Volume 2': ccv2,
+    Zenith: zenith,
+    'No Nations (Instrumentals)': noNations,
+    'Ghosts I-IV': ghosts,
+    'The Slip': theSlip,
+  };
+
+  await Promise.all(userData.map((user) => User.create(user)));
+
+  await Promise.all(
+    songs.map((song) =>
+      Song.create({
+        name: song.name,
+        audioUrl: song.audioUrl,
+        albumId: albums[song.album].id,
+        artistId: artists[song.artist].id,
+        genre: song.genre,
+      })
+    )
   );
-  const skis = await Promise.all(skiData.map((ski) => Product.create(ski)));
 
-  console.log(
-    `seeded ${users.length} users and ${skis.length} skis and ${snowboards.length} snowboards`
-  );
-  console.log(`seeded successfully`);
-}
+  db.close();
+  console.log(`
 
-//A user is created through post request or seed
-//A cart is created for that user and then it's assigned to the user
+    Seeding successful!
+    Juke is now ready to rock!
 
-/*
- We've separated the `seed` function from the `runSeed` function.
- This way we can isolate the error handling and exit trapping.
- The `seed` function is concerned only with modifying the database.
-*/
-async function runSeed() {
-  console.log('seeding...');
-  try {
-    await seed();
-  } catch (err) {
-    console.error(err);
-    process.exitCode = 1;
-  } finally {
-    console.log('closing db connection');
-    await db.close();
-    console.log('db connection closed');
-  }
-}
+  `);
+};
 
-/*
-  Execute the `seed` function, IF we ran this module directly (`node seed`).
-  `Async` functions always return a promise, so we can use `catch` to handle
-  any errors that might occur inside of `seed`.
-*/
-if (module === require.main) {
-  runSeed();
-}
+seed().catch((err) => {
+  db.close();
+  console.log(`
 
-// we export the seed function for testing purposes (see `./seed.spec.js`)
-module.exports = seed;
+    Error seeding:
+
+    ${err.message}
+
+    ${err.stack}
+
+  `);
+});

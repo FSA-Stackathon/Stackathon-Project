@@ -3,21 +3,10 @@ import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import auth from './auth';
-import products from './products';
-import product from './singleProduct';
-import cart from './cart';
-import userProfile from './userProfile';
-import usersReducer from './users';
+import albums from './albums';
+import singleAlbum from './singleAlbum';
 
-const reducer = combineReducers({
-  auth,
-  products,
-  product,
-  cart,
-  userProfile,
-  users: usersReducer,
-});
-
+const reducer = combineReducers({ auth, albums, singleAlbum });
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
 );

@@ -8,7 +8,6 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import Image from 'react-bootstrap/Image';
 
 const SignUpForm = (props) => {
   const { name, displayName, handleSubmit, error } = props;
@@ -56,7 +55,10 @@ const SignUpForm = (props) => {
                     <Form.Label htmlFor='email'>Email</Form.Label>
                     <Form.Control name='email' type='text'></Form.Control>
                     <Form.Label htmlFor='password'>Password</Form.Label>
-                    <Form.Control name='password' type='password'></Form.Control>
+                    <Form.Control
+                      name='password'
+                      type='password'
+                    ></Form.Control>
                     <Button
                       variant='secondary'
                       className='mt-auto'

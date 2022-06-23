@@ -1,45 +1,40 @@
 //this is the access point for all things database related!
 const db = require('./db');
 const User = require('./models/User');
-const Product = require('./models/Product');
-const Order = require('./models/Order');
-const CartDetail = require('./models/CartDetail');
-const Cart = require('./models/Cart');
+const Album = require('./models/Album');
+const Artist = require('./models/Artist');
+const Playlist = require('./models/Playlist');
+const PlaylistHistory = require('./models/PlaylistHistory');
+const Song = require('./models/Song');
 
-//associations could go here!
-User.hasOne(Cart);
-Cart.belongsTo(User);
+// Model associations
+Song.belongsTo(Album);
+Album.hasMany(Song);
 
-Product.hasOne(CartDetail);
-CartDetail.belongsTo(Product);
+Song.belongsTo(Artist);
+Artist.hasMany(Song);
 
-Cart.hasMany(CartDetail);
-CartDetail.belongsTo(Cart);
+Album.belongsTo(Artist);
+Artist.hasMany(Album);
 
-Order.hasMany(CartDetail);
-CartDetail.belongsTo(Order);
+// Album.belongsTo(Playlist);
+// Playlist.hasMany(Album);
 
-User.hasMany(Order);
-Order.belongsTo(User);
+// Playlist.belongsTo(PlaylistHistory);
+// PlaylistHistory.hasMany(Playlist);
 
-//User is created and assigned a cart
-const createAndAssignCart = async (user) => {
-  const cart = await Cart.create({ cartEmpty: true });
-  await user.setCart(cart);
-  const orders = await Order.findAll({ where: { email: user.email } });
+// User.hasOne(PlaylistHistory);
+// PlaylistHistory.belongsTo(User);
 
-  user.addOrders(orders);
-};
-
-User.afterCreate(createAndAssignCart);
+// User.hasMany(Playlist);
+// Playlist.belongsTo(User);
 
 module.exports = {
   db,
-  models: {
-    User,
-    Product,
-    Order,
-    CartDetail,
-    Cart,
-  },
+  User,
+  Album,
+  Artist,
+  Playlist,
+  PlaylistHistory,
+  Song,
 };
