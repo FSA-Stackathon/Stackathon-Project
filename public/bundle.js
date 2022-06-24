@@ -1925,12 +1925,6 @@ const Audio = () => {
   const [isMuted, setIsMuted] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   let howlerRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
 
-  const myLoadFunc = () => {
-    if (howlerRef.current) {
-      howlerRef.current.load();
-    }
-  };
-
   function getHowler() {
     return howlerRef.howler;
   }
@@ -1951,7 +1945,6 @@ const Audio = () => {
   }
 
   function play() {
-    getSeek();
     setIsPlaying(true);
   }
 
@@ -1960,9 +1953,6 @@ const Audio = () => {
   }
 
   function load(currentSong, currentSongList) {
-    // AUDIO.src = currentSong.audioUrl;
-    // AUDIO.load();
-    // console.log('player', myLoadFunc());
     setCurrentSong(currentSong);
     setCurrentSongList(currentSongList);
   }
@@ -1990,11 +1980,17 @@ const Audio = () => {
   }
 
   function next() {
-    startSong(...skip(1, this.state));
+    startSong(...skip(1, {
+      currentSong,
+      currentSongList
+    }));
   }
 
   function prev() {
-    startSong(...skip(-1, this.state));
+    startSong(...skip(-1, {
+      currentSong,
+      currentSongList
+    }));
   }
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react_howler__WEBPACK_IMPORTED_MODULE_2___default()), {
@@ -2151,10 +2147,9 @@ const Player = props => {
     onClick: prev
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
     className: isPlaying ? 'fa fa-pause-circle' : 'fa fa-play-circle',
-    onClick: toggle,
-    hidden: isCurrentlyPlaying ? false : true
+    onClick: toggle
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
-    className: isMuted ? 'fa fa-play-circle' : 'fa fa-step-forward',
+    className: isMuted ? 'fa fa-play-circle' : 'fa fa-pause-circle',
     onClick: mute
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
     className: "fa fa-step-forward",

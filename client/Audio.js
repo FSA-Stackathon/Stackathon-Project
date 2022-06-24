@@ -29,12 +29,6 @@ const Audio = () => {
 
   let howlerRef = useRef(null);
 
-  const myLoadFunc = () => {
-    if (howlerRef.current) {
-      howlerRef.current.load();
-    }
-  };
-
   function getHowler() {
     return howlerRef.howler;
   }
@@ -53,7 +47,6 @@ const Audio = () => {
   }
 
   function play() {
-    getSeek();
     setIsPlaying(true);
   }
 
@@ -62,10 +55,6 @@ const Audio = () => {
   }
 
   function load(currentSong, currentSongList) {
-    // AUDIO.src = currentSong.audioUrl;
-    // AUDIO.load();
-
-    // console.log('player', myLoadFunc());
     setCurrentSong(currentSong);
     setCurrentSongList(currentSongList);
   }
@@ -94,11 +83,11 @@ const Audio = () => {
   }
 
   function next() {
-    startSong(...skip(1, this.state));
+    startSong(...skip(1, { currentSong, currentSongList }));
   }
 
   function prev() {
-    startSong(...skip(-1, this.state));
+    startSong(...skip(-1, { currentSong, currentSongList }));
   }
 
   return (

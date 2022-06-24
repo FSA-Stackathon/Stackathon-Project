@@ -13,10 +13,9 @@ const Player = (props) => {
           <i
             className={isPlaying ? 'fa fa-pause-circle' : 'fa fa-play-circle'}
             onClick={toggle}
-            hidden={isCurrentlyPlaying ? false : true}
           />
           <i
-            className={isMuted ? 'fa fa-play-circle' : 'fa fa-step-forward'}
+            className={isMuted ? 'fa fa-play-circle' : 'fa fa-pause-circle'}
             onClick={mute}
           />
           <i className="fa fa-step-forward" onClick={next} />
