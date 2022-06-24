@@ -27,16 +27,33 @@ const Audio = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
 
-  const howlerRef = useRef(null);
+  let howlerRef = useRef(null);
 
   const myLoadFunc = () => {
     if (howlerRef.current) {
-      console.log('howler', howlerRef.current);
       howlerRef.current.load();
     }
   };
 
+  function getHowler() {
+    return howlerRef.howler;
+  }
+  function getDuration() {
+    //returns the total length of the song (seconds)
+    howlerRef.howler.duration;
+  }
+  function getSeek() {
+    //returns where we pause the song
+    const getSeek = howlerRef.howler.seek();
+  }
+
+  function setSeek() {
+    //sets the position within the song (in seconds)
+    const seek = howlerRef.seek(0.5);
+  }
+
   function play() {
+    getSeek();
     setIsPlaying(true);
   }
 
@@ -48,7 +65,7 @@ const Audio = () => {
     // AUDIO.src = currentSong.audioUrl;
     // AUDIO.load();
 
-    console.log('player', myLoadFunc());
+    // console.log('player', myLoadFunc());
     setCurrentSong(currentSong);
     setCurrentSongList(currentSongList);
   }
@@ -90,8 +107,9 @@ const Audio = () => {
         src={currentSong.audioUrl || ['']}
         playing={isPlaying}
         mute={isMuted}
-        ref={howlerRef}
+        ref={(ref) => (howlerRef = ref)}
         html5={true}
+        preload={true}
       />
       <Main
         currentSong={currentSong}

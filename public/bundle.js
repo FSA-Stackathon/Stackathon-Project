@@ -1923,16 +1923,35 @@ const Audio = () => {
   const [currentSongList, setCurrentSongList] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [isPlaying, setIsPlaying] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [isMuted, setIsMuted] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
-  const howlerRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  let howlerRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
 
   const myLoadFunc = () => {
     if (howlerRef.current) {
-      console.log('howler', howlerRef.current);
       howlerRef.current.load();
     }
   };
 
+  function getHowler() {
+    return howlerRef.howler;
+  }
+
+  function getDuration() {
+    //returns the total length of the song (seconds)
+    howlerRef.howler.duration;
+  }
+
+  function getSeek() {
+    //returns where we pause the song
+    const getSeek = howlerRef.howler.seek();
+  }
+
+  function setSeek() {
+    //sets the position within the song (in seconds)
+    const seek = howlerRef.seek(0.5);
+  }
+
   function play() {
+    getSeek();
     setIsPlaying(true);
   }
 
@@ -1943,7 +1962,7 @@ const Audio = () => {
   function load(currentSong, currentSongList) {
     // AUDIO.src = currentSong.audioUrl;
     // AUDIO.load();
-    console.log('player', myLoadFunc());
+    // console.log('player', myLoadFunc());
     setCurrentSong(currentSong);
     setCurrentSongList(currentSongList);
   }
@@ -1982,8 +2001,9 @@ const Audio = () => {
     src: currentSong.audioUrl || [''],
     playing: isPlaying,
     mute: isMuted,
-    ref: howlerRef,
-    html5: true
+    ref: ref => howlerRef = ref,
+    html5: true,
+    preload: true
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Main__WEBPACK_IMPORTED_MODULE_1__["default"], {
     currentSong: currentSong,
     isPlaying: isPlaying,
