@@ -1,19 +1,28 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Sidebar from "./Sidebar";
-import SingleAlbum from "./SingleAlbum";
-import AlbumsList from "./AlbumsList";
-import Player from "./Player";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Sidebar from './Sidebar';
+import SingleAlbum from './SingleAlbum';
+import AlbumsList from './AlbumsList';
+import Player from './Player';
 
 const Main = (props) => {
-  const { next, prev, toggle, toggleOne, currentSong, isPlaying } = props;
+  const {
+    next,
+    prev,
+    toggle,
+    toggleOne,
+    currentSong,
+    isPlaying,
+    isMuted,
+    mute,
+  } = props;
 
   const [albums, setAlbums] = useState([]);
   const [selectedAlbum, setSelectedAlbum] = useState({});
 
   useEffect(() => {
     async function fetchAlbums() {
-      const { data } = await axios.get("/api/albums");
+      const { data } = await axios.get('/api/albums');
       setAlbums(data);
     }
     fetchAlbums();
@@ -39,13 +48,22 @@ const Main = (props) => {
             album={selectedAlbum}
             toggleOne={toggleOne}
             isPlaying={isPlaying}
+            isMuted={isMuted}
             currentSong={currentSong}
           />
         ) : (
           <AlbumsList albums={albums} pickAlbum={pickAlbum} />
         )}
       </div>
-      <Player prev={prev} next={next} toggle={toggle} isPlaying={isPlaying} />
+      <Player
+        prev={prev}
+        next={next}
+        toggle={toggle}
+        isPlaying={isPlaying}
+        isMuted={isMuted}
+        mute={mute}
+        currentSong={currentSong}
+      />
     </div>
   );
 };

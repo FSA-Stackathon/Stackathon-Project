@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
-import Main from "./Main";
+import React, { useState, useEffect, useRef } from 'react';
+import Main from './Main';
+import ReactHowler from 'react-howler';
 
 // creates the Audio element
 // While the Audio element is part of HTML5, it doesn't `visually` show up anywhere in the DOM.
 // However, we interact with it the same way we would a DOM node. That's pretty cool!
 
-const AUDIO = document.createElement("audio");
+// const AUDIO = document.createElement('audio');
 
 // Some utility functions
 
@@ -24,29 +25,30 @@ const Audio = () => {
   const [currentSong, setCurrentSong] = useState({});
   const [currentSongList, setCurrentSongList] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
 
-  useEffect(() => {
-    AUDIO.addEventListener("ended", () => next());
+  const howlerRef = useRef(null);
 
-    return () => {
-      AUDIO.removeEventListener("ended");
-    };
-  }, []);
+  const myLoadFunc = () => {
+    if (howlerRef.current) {
+      console.log('howler', howlerRef.current);
+      howlerRef.current.load();
+    }
+  };
 
   function play() {
-    AUDIO.play();
     setIsPlaying(true);
   }
 
   function pause() {
-    AUDIO.pause();
     setIsPlaying(false);
   }
 
   function load(currentSong, currentSongList) {
-    AUDIO.src = currentSong.audioUrl;
-    AUDIO.load();
+    // AUDIO.src = currentSong.audioUrl;
+    // AUDIO.load();
 
+    console.log('player', myLoadFunc());
     setCurrentSong(currentSong);
     setCurrentSongList(currentSongList);
   }
@@ -70,6 +72,10 @@ const Audio = () => {
     else play();
   }
 
+  function mute() {
+    setIsMuted(!isMuted);
+  }
+
   function next() {
     startSong(...skip(1, this.state));
   }
@@ -79,14 +85,25 @@ const Audio = () => {
   }
 
   return (
-    <Main
-      currentSong={currentSong}
-      isPlaying={isPlaying}
-      prev={prev}
-      next={next}
-      toggleOne={toggleOne}
-      toggle={toggle}
-    />
+    <div>
+      <ReactHowler
+        src={currentSong.audioUrl || ['']}
+        playing={isPlaying}
+        mute={isMuted}
+        ref={howlerRef}
+        html5={true}
+      />
+      <Main
+        currentSong={currentSong}
+        isPlaying={isPlaying}
+        isMuted={isMuted}
+        mute={mute}
+        prev={prev}
+        next={next}
+        toggleOne={toggleOne}
+        toggle={toggle}
+      />
+    </div>
   );
 };
 
