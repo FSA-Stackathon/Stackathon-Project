@@ -40,30 +40,32 @@ const Main = (props) => {
   }
 
   return (
-    <div id="main" className="row container">
+    <div id='main' className='row container'>
       <Sidebar deselectAlbum={deselectAlbum} />
-      <div className="container">
+      <div className='container'>
         {selectedAlbum.id ? (
-          <SingleAlbum
-            album={selectedAlbum}
-            toggleOne={toggleOne}
-            isPlaying={isPlaying}
-            isMuted={isMuted}
-            currentSong={currentSong}
-          />
+          <div>
+            <SingleAlbum
+              album={selectedAlbum}
+              toggleOne={toggleOne}
+              isPlaying={isPlaying}
+              isMuted={isMuted}
+              currentSong={currentSong}
+            />
+            <Player
+              prev={prev}
+              next={next}
+              toggle={toggle}
+              isPlaying={isPlaying}
+              isMuted={isMuted}
+              mute={mute}
+              currentSong={currentSong}
+            />
+          </div>
         ) : (
           <AlbumsList albums={albums} pickAlbum={pickAlbum} />
         )}
       </div>
-      <Player
-        prev={prev}
-        next={next}
-        toggle={toggle}
-        isPlaying={isPlaying}
-        isMuted={isMuted}
-        mute={mute}
-        currentSong={currentSong}
-      />
     </div>
   );
 };

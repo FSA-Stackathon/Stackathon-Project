@@ -2,14 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Main from './Main';
 import ReactHowler from 'react-howler';
 
-// creates the Audio element
-// While the Audio element is part of HTML5, it doesn't `visually` show up anywhere in the DOM.
-// However, we interact with it the same way we would a DOM node. That's pretty cool!
-
-// const AUDIO = document.createElement('audio');
-
 // Some utility functions
-
 const mod = (num, m) => ((num % m) + m) % m;
 
 const skip = (interval, { currentSongList, currentSong }) => {
@@ -20,7 +13,6 @@ const skip = (interval, { currentSongList, currentSong }) => {
 };
 
 // The stateful Audio component
-
 const Audio = () => {
   const [currentSong, setCurrentSong] = useState({});
   const [currentSongList, setCurrentSongList] = useState([]);
